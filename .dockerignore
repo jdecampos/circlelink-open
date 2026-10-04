@@ -1,0 +1,13 @@
+# Jamais de secret ni de donnée locale dans le contexte de build (constitution VII.3)
+.env*
+!.env.example
+.git
+.next
+node_modules
+dist-scripts
+specs
+compose.dev.yaml
+docker-compose.yml
+compose.port.yaml
+*.log
+coverage

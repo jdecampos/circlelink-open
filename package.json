@@ -1,0 +1,42 @@
+{
+  "name": "circlelink",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "db:up": "docker compose -f compose.dev.yaml up -d",
+    "db:down": "docker compose -f compose.dev.yaml down",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "node --env-file=.env.development.local scripts/db/migrate.ts",
+    "test:pg": "node --env-file-if-exists=.env.development.local node_modules/vitest/vitest.mjs run"
+  },
+  "dependencies": {
+    "better-auth": "1.7.7",
+    "drizzle-orm": "0.45.3",
+    "next": "16.3.8",
+    "nodemailer": "10.0.13",
+    "postgres": "3.4.9",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "@types/node": "^20",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "drizzle-kit": "0.31.11",
+    "esbuild": "^0.28.2",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.8",
+    "typescript": "^5",
+    "vitest": "^5.0.3"
+  },
+  "packageManager": "pnpm@11.9.0"
+}

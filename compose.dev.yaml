@@ -1,0 +1,26 @@
+# Environnement de développement local : PostgreSQL 18 (comme Coolify) et smtp4dev,
+# qui capture les emails de connexion (interface : http://localhost:5080).
+services:
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: circlelink_owner
+      POSTGRES_PASSWORD: dev-owner
+      POSTGRES_DB: circlelink
+    ports:
+      - "54329:5432"
+    volumes:
+      - db-data-18:/var/lib/postgresql  # PostgreSQL 18 : données dans /var/lib/postgresql/18/docker
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U circlelink_owner -d circlelink"]
+      interval: 2s
+      retries: 30
+
+  smtp:
+    image: rnwood/smtp4dev:v3
+    ports:
+      - "5080:80"
+      - "2525:25"
+
+volumes:
+  db-data-18:

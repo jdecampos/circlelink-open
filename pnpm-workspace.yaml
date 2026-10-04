@@ -1,0 +1,13 @@
+# Défenses de la chaîne d'approvisionnement, écrites en clair même quand ce sont les
+# défauts de pnpm 11 : elles tiennent si une CI ou un poste épingle une version plus ancienne.
+
+# Une version publiée sur npm n'est installable qu'au bout de 24 h (en minutes).
+minimumReleaseAge: 1440
+
+# Scripts d'installation : refusés par défaut, autorisés paquet par paquet après vérification.
+# esbuild, sharp et unrs-resolver livrent leurs binaires par dépendances optionnelles :
+# leur script ne fait que vérifier ce binaire, rien à exécuter.
+allowBuilds:
+  esbuild: false
+  sharp: false
+  unrs-resolver: false

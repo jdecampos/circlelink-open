@@ -1,0 +1,6 @@
+# Hors Coolify : publie l'app sur le port 3000 de l'hôte (Coolify passe par son proxy).
+# Chargé par COMPOSE_FILE, que scripts/init-env.sh écrit dans .env.
+services:
+  app:
+    ports:
+      - "${APP_PORT:-3000}:3000"

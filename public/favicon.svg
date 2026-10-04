@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="CircleLink">
+  <style>
+    .c{ fill:none; stroke:#141413; stroke-width:5 }
+    .b{ fill:none; stroke:#2e7d67; stroke-width:5 }
+    @media (prefers-color-scheme: dark){
+      .c{ stroke:#f4f5f1 }
+      .b{ stroke:#5cb59a }
+    }
+  </style>
+  <circle class="c" cx="18" cy="24" r="11"/>
+  <circle class="b" cx="30" cy="24" r="11"/>
+</svg>

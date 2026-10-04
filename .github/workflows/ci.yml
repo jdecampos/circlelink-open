@@ -1,0 +1,107 @@
+# Contrôles de chaque PR et de chaque push sur main et develop (constitution : chaque CONTRÔLE
+# exécutable passe ici). Actions épinglées par empreinte de commit, jamais par étiquette mobile.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Lint, types, tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0, version lue dans packageManager
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - name: Aucune variable publique ni email réel (VII.3, VII.4)
+        # « ! cmd » n'arrête pas un script en set -e : chaque contrôle sort explicitement en erreur
+        run: |
+          if grep -rn NEXT_PUBLIC_ src Dockerfile .env.example; then exit 1; fi
+          if grep -rnoE "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" src scripts | grep -vi example.com; then exit 1; fi
+          if grep -rnE ":\s*any\b|as any\b" src/; then exit 1; fi
+
+  integration:
+    name: Tests sur PostgreSQL 18
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: circlelink_owner
+          POSTGRES_PASSWORD: dev-owner
+          POSTGRES_DB: circlelink_test
+        ports: ['54329:5432']
+        options: >-
+          --health-cmd "pg_isready -U circlelink_owner -d circlelink_test"
+          --health-interval 2s --health-retries 30
+      smtp:
+        image: rnwood/smtp4dev:v3
+        ports: ['5080:80', '2525:25']
+    env:
+      TEST_DATABASE_URL: postgres://circlelink_owner:dev-owner@localhost:54329/circlelink_test
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: smtp4dev prêt
+        run: for _ in $(seq 1 30); do curl -sf http://localhost:5080/api/messages >/dev/null && exit 0; sleep 2; done; exit 1
+      - run: pnpm test:pg
+
+  docker:
+    name: Image Docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Construction sans base ni secret
+        run: docker build -t circlelink:ci .
+      - name: Aucun secret dans les couches de l'image (VII.3)
+        run: |
+          if docker history --no-trunc circlelink:ci | grep -iE "PASSWORD=|SECRET=|DATABASE_URL="; then exit 1; fi
+
+  secrets:
+    name: Secrets (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # tout l'historique
+      - name: gitleaks sur tout l'historique
+        run: >-
+          docker run --rm -v "$PWD:/repo"
+          ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f
+          git /repo --redact --no-banner --exit-code 1
+
+  upgrade:
+    name: Mise à jour N → N+1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Image N (branche cible de la PR, sinon commit précédent) et image N+1
+        run: |
+          base="${{ github.base_ref && format('origin/{0}', github.base_ref) || 'HEAD~1' }}"
+          git worktree add ../base "$base"
+          docker build -t circlelink:base ../base
+          docker build -t circlelink:pr .
+      - run: ./scripts/ci/upgrade.sh circlelink:base circlelink:pr

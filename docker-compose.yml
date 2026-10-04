@@ -1,0 +1,56 @@
+# CircleLink en production : l'app et sa base PostgreSQL, sur un volume nommé.
+#
+# Coolify (« Docker Compose ») génère seul les variables SERVICE_* : le domaine
+# (SERVICE_URL_APP, sur le port 3000) et les mots de passe. Rien à saisir.
+# Ailleurs : ./scripts/init-env.sh https://mondomaine.fr écrit ces mêmes variables
+# dans .env, puis docker compose up -d.
+#
+# SMTP et Mautic sont facultatifs : laisse leurs variables vides pour s'en passer.
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      SERVICE_URL_APP_3000:
+      SITE_URL: ${SERVICE_URL_APP}
+      DATABASE_MIGRATION_URL: postgres://circlelink_owner:${SERVICE_PASSWORD_POSTGRES}@db:5432/circlelink
+      DATABASE_URL: postgres://circlelink_app:${SERVICE_PASSWORD_APPDB}@db:5432/circlelink
+      BETTER_AUTH_SECRET: ${SERVICE_PASSWORD_64_AUTH}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      MAUTIC_URL: ${MAUTIC_URL:-}
+      MAUTIC_USERNAME: ${MAUTIC_USERNAME:-}
+      MAUTIC_PASSWORD: ${MAUTIC_PASSWORD:-}
+      MAUTIC_SEGMENT_ALIAS: ${MAUTIC_SEGMENT_ALIAS:-}
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
+
+  # Aucun port publié : la base n'est joignable que par l'app.
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: circlelink_owner
+      POSTGRES_PASSWORD: ${SERVICE_PASSWORD_POSTGRES}
+      POSTGRES_DB: circlelink
+    volumes:
+      - db-data:/var/lib/postgresql  # PostgreSQL 18 : données dans /var/lib/postgresql/18/docker
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U circlelink_owner -d circlelink"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  db-data:
