@@ -6,10 +6,10 @@ export function toSource(v: string): Source {
   return (SOURCES as readonly string[]).includes(v) ? (v as Source) : 'direct';
 }
 
-/** Issue d'un appel Mautic : `retry` = réessayer plus tard, `permanent` = ne pas réessayer. */
+/** Issue d'une transmission au service : `retry` = réessayer plus tard, `permanent` = ne pas réessayer. */
 export type DeliveryOutcome =
-  | { kind: 'ok'; contactId: number }
-  | { kind: 'retry'; cause: string }
+  | { kind: 'ok' }
+  | { kind: 'retry'; cause: string; /** le service refuse la clé (401/403) */ keyRejected?: boolean }
   | { kind: 'permanent'; cause: string };
 
 export type QueuedSubscription = {
@@ -23,5 +23,5 @@ export type QueuedSubscription = {
 export type SubscribeInput = { email: string; referrer: string };
 
 export type SubscribeResult =
-  | { ok: true } // transmis à Mautic, ou mis en file
+  | { ok: true } // transmis au service, ou mis en file
   | { ok: false; error: string }; // message en français, affichable tel quel

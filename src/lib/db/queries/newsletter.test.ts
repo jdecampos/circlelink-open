@@ -4,7 +4,7 @@ import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { createTestDb } from '@/test/db';
 import type { Db } from '../client';
 import { newsletterQueue, newsletterStats } from '../schema';
-import { claimDue, enqueue, queueStats, resolve } from './newsletter';
+import { claimDue, enqueue, purgeExpired, queueStats, resolve } from './newsletter';
 
 // Reprend les scénarios des tests SQL de la file de la feature 001.
 let db: Db;
@@ -58,6 +58,15 @@ describe('file newsletter', () => {
     await db.update(newsletterQueue).set({ createdAt: sql`now() - interval '25 hours'`, nextAttemptAt: sql`now() - interval '1 minute'` });
     expect(await claimDue(10)).toEqual([]);
     expect(await db.$count(newsletterQueue)).toBe(0);
+    expect(await lost()).toBe(1);
+  });
+
+  it('sans service : purgeExpired retire seulement les lignes de plus de 24 h', async () => {
+    await enqueue('vieux@example.com', 'x');
+    await enqueue('recent@example.com', 'x');
+    await db.update(newsletterQueue).set({ createdAt: sql`now() - interval '25 hours'` }).where(eq(newsletterQueue.email, 'vieux@example.com'));
+    expect(await purgeExpired(db)).toBe(1);
+    expect((await db.select().from(newsletterQueue)).map((r) => r.email)).toEqual(['recent@example.com']);
     expect(await lost()).toBe(1);
   });
 

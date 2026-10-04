@@ -1,8 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('./page-data', () => ({
-  getPage: async () => ({ profile: { name: 'Alex', bio: '', handle: '' }, categories: [], links: [] }),
-}));
+const page = { profile: { name: 'Alex', bio: '', handle: '' }, categories: [], links: [], newsletter: false };
+vi.mock('./page-data', () => ({ getPage: async () => page }));
 
 const { generateMetadata } = await import('./page');
 
@@ -18,13 +17,10 @@ describe('métadonnées de la page publique', () => {
 });
 
 describe('bloc newsletter', () => {
-  it('absent sans Mautic, présent avec', async () => {
+  it('suit le réglage de l’espace, lu dans les données en cache', async () => {
     const { default: Home } = await import('./page');
-    vi.stubEnv('MAUTIC_URL', '');
     expect((await Home()).props.data.newsletter).toBe(false);
-    vi.stubEnv('MAUTIC_URL', 'https://m.example.com');
-    vi.stubEnv('MAUTIC_USERNAME', 'u');
-    vi.stubEnv('MAUTIC_PASSWORD', 'p');
+    page.newsletter = true;
     expect((await Home()).props.data.newsletter).toBe(true);
   });
 });

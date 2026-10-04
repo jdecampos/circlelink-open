@@ -1,5 +1,4 @@
 import { timingSafeEqual } from 'node:crypto';
-import { readConfig, type NewsletterConfig } from '@/lib/newsletter/config';
 import { logNewsletter } from '@/lib/newsletter/log';
 import { processQueue } from '@/lib/newsletter/retry';
 
@@ -15,21 +14,17 @@ function sameSecret(a: string, b: string) {
 }
 
 export async function POST(req: Request) {
-  let cfg: NewsletterConfig;
-  try {
-    cfg = readConfig(process.env, { requireRetrySecret: true });
-  } catch (e) {
-    // le message nomme la variable manquante, jamais une valeur
-    return Response.json({ error: e instanceof Error ? e.message : 'configuration illisible' }, { status: 500 });
-  }
+  const secret = process.env.NEWSLETTER_RETRY_SECRET?.trim();
+  // route facultative : sans secret, elle n'existe pas (l'app retente déjà la file elle-même)
+  if (!secret) return Response.json({ error: 'NEWSLETTER_RETRY_SECRET non définie : reprise externe désactivée' }, { status: 404 });
 
   const auth = req.headers.get('authorization') ?? '';
-  if (!auth.startsWith('Bearer ') || !sameSecret(auth.slice(7), cfg.retrySecret)) {
+  if (!auth.startsWith('Bearer ') || !sameSecret(auth.slice(7), secret)) {
     return Response.json({ error: 'non autorisé' }, { status: 401 });
   }
 
   try {
-    return Response.json(await processQueue(cfg, { limit: BATCH }));
+    return Response.json(await processQueue({ limit: BATCH }));
   } catch (e) {
     logNewsletter('newsletter.retry', { outcome: 'failed', cause: e instanceof Error ? e.message : 'erreur inattendue' });
     return Response.json({ error: 'file indisponible' }, { status: 502 });

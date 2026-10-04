@@ -19,7 +19,7 @@ function Bar({ label, val, max }: { label: string; val: number; max: number }) {
   );
 }
 
-/** `segmentCount` : membres du segment Mautic des inscrits, ou null si Mautic n'a pas répondu. */
+/** `segmentCount` : abonnés de la liste du service connecté, ou null s'il n'a pas répondu. */
 export default function StatsView({ segmentCount }: { segmentCount: number | null }) {
   const { data } = useAdmin();
   const { links, categories, clicks, sources, queue, newsletter } = data;
@@ -52,7 +52,7 @@ export default function StatsView({ segmentCount }: { segmentCount: number | nul
         </div>
         <div className="kpi od-stat">
           <span className="kpi-num">{segmentCount === null ? '—' : segmentCount.toLocaleString('fr-FR')}</span>
-          <span className="kpi-cap">{!newsletter ? 'Newsletter non configurée' : segmentCount === null ? 'inscrits à la newsletter · Mautic indisponible' : 'inscrits à la newsletter'}</span>
+          <span className="kpi-cap">{!newsletter ? 'Newsletter désactivée' : segmentCount === null ? 'inscrits à la newsletter · service indisponible' : 'inscrits à la newsletter'}</span>
         </div>
       </div>
       {(queue.pending > 0 || queue.lost > 0) && (
@@ -61,12 +61,12 @@ export default function StatsView({ segmentCount }: { segmentCount: number | nul
           <p>
             {queue.pending > 0 && (
               <>
-                <strong>{plural(queue.pending, 'inscription')} en attente</strong> de transmission à Mautic, retentée{queue.pending > 1 ? 's' : ''} toutes les 15 minutes.{' '}
+                <strong>{plural(queue.pending, 'inscription')} en attente</strong> de transmission à ton service d’emailing, retentée{queue.pending > 1 ? 's' : ''} toutes les 15 minutes.{' '}
               </>
             )}
             {queue.lost > 0 && (
               <>
-                <strong>{plural(queue.lost, 'inscription')} perdue{queue.lost > 1 ? 's' : ''}</strong> : Mautic est resté injoignable plus de 24 h.
+                <strong>{plural(queue.lost, 'inscription')} perdue{queue.lost > 1 ? 's' : ''}</strong> : ton service d’emailing est resté injoignable plus de 24 h.
               </>
             )}
           </p>

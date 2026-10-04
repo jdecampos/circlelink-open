@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { newsletterEnabled } from '@/lib/features';
 import { displayName } from '@/lib/brand';
 import { siteUrl } from '@/lib/site';
 import LinkPage from './LinkPage';
@@ -26,6 +25,5 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
   const data = await getPage();
-  // drapeau relu à chaque rendu : ajouter Mautic puis redémarrer suffit, même avec un cache ancien
-  return <LinkPage data={{ ...data, links: data.links.filter((l) => l.visible), newsletter: newsletterEnabled() }} />;
+  return <LinkPage data={{ ...data, links: data.links.filter((l) => l.visible) }} />;
 }

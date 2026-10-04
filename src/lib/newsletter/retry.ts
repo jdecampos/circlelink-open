@@ -1,7 +1,7 @@
 import 'server-only';
 import { pgErrorCode } from '@/lib/db/client';
-import { claimDue, resolve } from '@/lib/db/queries/newsletter';
-import type { NewsletterConfig } from './config';
+import { claimDue, purgeExpired, resolve } from '@/lib/db/queries/newsletter';
+import { getActiveConnection } from '@/lib/db/queries/newsletter-settings';
 import { deliver } from './deliver';
 import { logNewsletter } from './log';
 import { toSource, type DeliveryOutcome, type QueuedSubscription } from './types';
@@ -12,8 +12,16 @@ export type RetryReport = { claimed: number; sent: number; lost: number; retried
 const BUDGET_MS = 5000;
 const OUTCOME = { ok: 'sent', permanent: 'lost', retry: 'retry' } as const;
 
-/** Retente un lot de la file. Une ligne en échec n'arrête jamais le lot. */
-export async function processQueue(cfg: NewsletterConfig, opts: { limit?: number } = {}): Promise<RetryReport> {
+/**
+ * Retente un lot de la file vers le service connecté. Une ligne en échec n'arrête jamais le lot.
+ * Sans service connecté, seule la purge des 24 h s'applique.
+ */
+export async function processQueue(opts: { limit?: number } = {}): Promise<RetryReport> {
+  const conn = await getActiveConnection();
+  if (!conn) {
+    await purgeExpired();
+    return { claimed: 0, sent: 0, lost: 0, retried: 0 };
+  }
   let rows: QueuedSubscription[];
   try {
     rows = await claimDue(opts.limit ?? 50);
@@ -25,7 +33,7 @@ export async function processQueue(cfg: NewsletterConfig, opts: { limit?: number
   for (const row of rows) {
     let outcome: DeliveryOutcome;
     try {
-      outcome = await deliver(cfg, { email: row.email, source: toSource(row.source) }, { budgetMs: BUDGET_MS });
+      outcome = await deliver(conn, { email: row.email, source: toSource(row.source) }, { budgetMs: BUDGET_MS });
     } catch {
       // erreur inattendue (et non classée) : on retentera au prochain passage, sans journaliser le détail
       outcome = { kind: 'retry', cause: 'erreur inattendue' };

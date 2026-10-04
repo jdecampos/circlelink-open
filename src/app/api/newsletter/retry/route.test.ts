@@ -9,9 +9,6 @@ const req = (auth?: string) => new Request('http://localhost/api/newsletter/retr
 
 beforeEach(() => {
   vi.resetAllMocks();
-  vi.stubEnv('MAUTIC_URL', 'https://m.fr');
-  vi.stubEnv('MAUTIC_USERNAME', 'api-user');
-  vi.stubEnv('MAUTIC_PASSWORD', 'mot-de-passe-secret');
   vi.stubEnv('NEWSLETTER_RETRY_SECRET', SECRET);
   vi.mocked(processQueue).mockResolvedValue({ claimed: 2, sent: 1, lost: 0, retried: 1 });
 });
@@ -33,17 +30,15 @@ describe('POST /api/newsletter/retry', () => {
     const res = await POST(req('Bearer ' + SECRET));
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ claimed: 2, sent: 1, lost: 0, retried: 1 });
-    expect(processQueue).toHaveBeenCalledWith(expect.objectContaining({ retrySecret: SECRET }), { limit: 10 });
+    expect(processQueue).toHaveBeenCalledWith({ limit: 10 });
   });
 
-  it('500 qui nomme la variable manquante, sans afficher de valeur', async () => {
-    vi.stubEnv('MAUTIC_URL', '');
+  it('404 sans NEWSLETTER_RETRY_SECRET : reprise externe désactivée', async () => {
+    vi.stubEnv('NEWSLETTER_RETRY_SECRET', '');
     const res = await POST(req('Bearer ' + SECRET));
-    expect(res.status).toBe(500);
-    const body = await res.text();
-    expect(body).toContain('MAUTIC_URL manquante');
-    expect(body).not.toContain('mot-de-passe-secret');
-    expect(body).not.toContain(SECRET);
+    expect(res.status).toBe(404);
+    expect(await res.text()).toContain('NEWSLETTER_RETRY_SECRET');
+    expect(processQueue).not.toHaveBeenCalled();
   });
 
   it('502 si la file est illisible', async () => {

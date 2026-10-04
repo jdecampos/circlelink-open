@@ -1,16 +1,14 @@
 import 'server-only';
 
-/* Intégrations facultatives : actives si leurs variables sont présentes, lues à l'exécution
-   (ajouter les variables puis redémarrer le conteneur suffit, sans reconstruire l'image). */
+/* SMTP facultatif : actif si ses variables sont présentes, lues à l'exécution (ajouter les
+   variables puis redémarrer le conteneur suffit, sans reconstruire l'image). La newsletter,
+   elle, se règle dans l'espace (src/lib/db/queries/newsletter-settings.ts). */
 
 type Env = Record<string, string | undefined>;
 const has = (env: Env, ...names: string[]) => names.every((n) => !!env[n]?.trim());
 
 /** Emails de connexion (lien magique, mot de passe oublié). */
 export const mailEnabled = (env: Env = process.env) => has(env, 'SMTP_HOST', 'SMTP_FROM');
-
-/** Inscription newsletter vers Mautic. */
-export const newsletterEnabled = (env: Env = process.env) => has(env, 'MAUTIC_URL', 'MAUTIC_USERNAME', 'MAUTIC_PASSWORD');
 
 /** Modes de connexion proposés par l'écran /connexion. */
 export type LoginModes = { magicLink: boolean; reset: boolean };

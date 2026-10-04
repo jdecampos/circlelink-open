@@ -1,26 +1,33 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { countSubscribers } from '@/lib/newsletter/mautic';
+import { getActiveConnection } from '@/lib/db/queries/newsletter-settings';
+import { connector } from '@/lib/newsletter/connectors';
 import StatsPage from './page';
 
-vi.mock('@/lib/newsletter/mautic', () => ({ countSubscribers: vi.fn() }));
+vi.mock('@/lib/db/queries/newsletter-settings', () => ({ getActiveConnection: vi.fn() }));
+vi.mock('@/lib/newsletter/connectors', () => ({ connector: vi.fn() }));
 
-afterEach(() => {
-  vi.unstubAllEnvs();
-  vi.clearAllMocks();
-});
+const countSubscribers = vi.fn();
+afterEach(() => vi.clearAllMocks());
 
 describe('statistiques', () => {
-  it('sans Mautic : aucun appel réseau, pas de compte d’inscrits', async () => {
-    vi.stubEnv('MAUTIC_URL', '');
+  it('newsletter coupée : aucun appel réseau, pas de compte d’inscrits', async () => {
+    vi.mocked(getActiveConnection).mockResolvedValue(null);
     expect((await StatsPage()).props.segmentCount).toBeNull();
-    expect(countSubscribers).not.toHaveBeenCalled();
+    expect(connector).not.toHaveBeenCalled();
   });
 
-  it('avec Mautic : le compte vient du segment', async () => {
-    vi.stubEnv('MAUTIC_URL', 'https://m.example.com');
-    vi.stubEnv('MAUTIC_USERNAME', 'u');
-    vi.stubEnv('MAUTIC_PASSWORD', 'p');
-    vi.mocked(countSubscribers).mockResolvedValue(42);
+  it('service connecté : le compte vient de sa liste', async () => {
+    vi.mocked(getActiveConnection).mockResolvedValue({ provider: 'brevo', key: 'k', audienceId: '7' });
+    vi.mocked(connector).mockReturnValue({ countSubscribers } as unknown as ReturnType<typeof connector>);
+    countSubscribers.mockResolvedValue(42);
     expect((await StatsPage()).props.segmentCount).toBe(42);
+    expect(countSubscribers).toHaveBeenCalledWith('k', '7', { timeoutMs: 1500 });
+  });
+
+  it('service injoignable : null (« service indisponible »)', async () => {
+    vi.mocked(getActiveConnection).mockResolvedValue({ provider: 'kit', key: 'k', audienceId: '5' });
+    vi.mocked(connector).mockReturnValue({ countSubscribers } as unknown as ReturnType<typeof connector>);
+    countSubscribers.mockRejectedValue(new Error('Kit ne répond pas.'));
+    expect((await StatsPage()).props.segmentCount).toBeNull();
   });
 });

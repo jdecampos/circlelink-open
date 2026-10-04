@@ -45,6 +45,22 @@ export async function claimDue(limit: number, db: Db = getDb()): Promise<QueuedS
   return rows.map((r) => ({ id: Number(r.id), email: r.email, source: toSource(r.source), attempts: Number(r.attempts) }));
 }
 
+/** Sans service connecté : seule la purge des inscriptions de plus de 24 h (comptées comme perdues). */
+export async function purgeExpired(db: Db = getDb()): Promise<number> {
+  const [r] = await exec<{ n: number | string }>(
+    sql`
+    with purged as (
+      delete from newsletter_queue where created_at < now() - interval '24 hours' returning 1
+    ), lost as (
+      update newsletter_stats set lost_count = lost_count + (select count(*) from purged), updated_at = now()
+      where id = 1 and exists (select 1 from purged) returning 1
+    )
+    select count(*) as n from purged`,
+    db,
+  );
+  return Number(r?.n ?? 0);
+}
+
 /** Issue d'une transmission : `sent` et `lost` retirent la ligne, `lost` la compte, `retry` garde la cause. */
 export async function resolve(id: number, outcome: 'sent' | 'lost' | 'retry', error: string | null = null): Promise<void> {
   const db = getDb();

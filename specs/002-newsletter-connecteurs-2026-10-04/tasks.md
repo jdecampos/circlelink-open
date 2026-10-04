@@ -23,17 +23,17 @@
 
 ## Connecteurs
 
-- [ ] T-005 — Interface, classement des réponses  (US-003)
+- [x] T-005 — Interface, classement des réponses  (US-003)
       Fichiers : connectors/types.ts, classify.ts (+ test)
-- [ ] T-006 — Brevo  (US-002, US-003, US-004)
-- [ ] T-007 — Mailchimp  (US-002, US-003, US-004)
-- [ ] T-008 — MailerLite  (US-002, US-003, US-004)
-- [ ] T-009 — Kit  (US-002, US-003, US-004)
+- [x] T-006 — Brevo  (US-002, US-003, US-004)
+- [x] T-007 — Mailchimp  (US-002, US-003, US-004)
+- [x] T-008 — MailerLite  (US-002, US-003, US-004)
+- [x] T-009 — Kit  (US-002, US-003, US-004)
       Fait quand (chacun) : test de contrat sur `fetch` simulé : requêtes conformes à la documentation du service (URL, en-têtes, corps) ; 2xx, 401, 422/400, 429, 5xx et délai classés comme prévu ; la clé n’apparaît dans aucun message d’erreur.
 
 ## Branchement
 
-- [ ] T-010 — Inscription et reprise par le connecteur actif  (US-001, US-003)
+- [x] T-010 — Inscription et reprise par le connecteur actif  (US-001, US-003)
       Fichiers : deliver.ts, subscription.ts, retry.ts, start.ts, instrumentation.ts (+ tests)
       Fait quand : désactivé → refus sans appel ; service lent → file ; 401 → file + `key_rejected_at` ; reprise vers le service connecté ; deux conteneurs ne transmettent jamais deux fois (test PostgreSQL existant).
 
@@ -41,7 +41,7 @@
       Fichiers : (admin)/admin/newsletter/*, newsletter-actions.ts, AdminSidebar.tsx, data.ts, types.ts
       Fait quand : chaque action refuse sans propriétaire (actions.test.ts) ; aucune réponse ne contient la clé ; parcours complet en navigateur (vérifier, choisir la liste, activer, voir le bloc sur `/`, désactiver) ; captures 390 et 1440 px.
 
-- [ ] T-012 — Statistiques  (US-004)
+- [x] T-012 — Statistiques  (US-004)
       Fichiers : (admin)/admin/stats/*
       Fait quand : compte lu par le connecteur, « — · service indisponible » en cas d’échec, « Newsletter désactivée » sinon.
 
