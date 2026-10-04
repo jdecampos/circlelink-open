@@ -122,7 +122,6 @@ export type ProfileInput = {
   theme: Theme;
   link_shape: LinkShape;
   avatar_url?: string;
-  show_credit?: boolean;
 };
 
 export async function saveProfile(input: ProfileInput): Promise<ActionResult> {

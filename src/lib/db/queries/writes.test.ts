@@ -99,12 +99,12 @@ describe('catégories', () => {
 
 describe('profil', () => {
   it('crée puis met à jour la ligne unique', async () => {
-    const p = { name: 'J', handle: 'j', bio: '', location: '', socials: {}, theme: 'clair' as const, link_shape: 'pilule' as const, avatar_url: '', show_credit: true };
+    const p = { name: 'J', handle: 'j', bio: '', location: '', socials: {}, theme: 'clair' as const, link_shape: 'pilule' as const, avatar_url: '' };
     await updateProfile(p);
-    await updateProfile({ ...p, name: 'Alex', theme: 'sombre', avatar_url: 'https://cdn.example.com/alex.jpg', show_credit: false });
+    await updateProfile({ ...p, name: 'Alex', theme: 'sombre', avatar_url: 'https://cdn.example.com/alex.jpg' });
     const rows = await db.select().from(profile);
     expect(rows).toHaveLength(1);
-    expect(rows[0]).toMatchObject({ id: 1, name: 'Alex', theme: 'sombre', avatarUrl: 'https://cdn.example.com/alex.jpg', showCredit: false });
+    expect(rows[0]).toMatchObject({ id: 1, name: 'Alex', theme: 'sombre', avatarUrl: 'https://cdn.example.com/alex.jpg' });
   });
 
   it('la base refuse une photo javascript: ou http:', async () => {

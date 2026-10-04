@@ -72,7 +72,5 @@ export function profileFrom(input: Record<string, unknown>): Profile | string {
   if (typeof socials === 'string') return socials;
   const avatar_url = normalizeUrl(str(input.avatar_url, 2048));
   if (avatar_url && !isSafeImageUrl(avatar_url)) return 'Photo : adresse https:// d’une image. Exemple : https://monsite.fr/photo.jpg';
-  const show_credit = input.show_credit ?? true;
-  if (typeof show_credit !== 'boolean') return 'show_credit doit valoir true ou false.';
-  return { name, handle, bio: str(input.bio, 160), location: str(input.location, 40), socials, theme: input.theme, link_shape: input.link_shape, avatar_url, show_credit };
+  return { name, handle, bio: str(input.bio, 160), location: str(input.location, 40), socials, theme: input.theme, link_shape: input.link_shape, avatar_url };
 }

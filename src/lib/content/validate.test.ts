@@ -49,11 +49,11 @@ describe('profileFrom', () => {
   });
 });
 
-describe('photo de profil et mention', () => {
+describe('photo de profil', () => {
   it('accepte une photo https:, https:// ajouté si besoin ; vide = initiale', () => {
     expect(profileFrom({ ...profile, avatar_url: 'https://cdn.example.com/alex.jpg' })).toMatchObject({ avatar_url: 'https://cdn.example.com/alex.jpg' });
     expect(profileFrom({ ...profile, avatar_url: 'cdn.example.com/alex.jpg' })).toMatchObject({ avatar_url: 'https://cdn.example.com/alex.jpg' });
-    expect(profileFrom(profile)).toMatchObject({ avatar_url: '', show_credit: true });
+    expect(profileFrom(profile)).toMatchObject({ avatar_url: '' });
   });
 
   it('refuse une photo javascript: ou http:', () => {
@@ -61,8 +61,4 @@ describe('photo de profil et mention', () => {
     expect(profileFrom({ ...profile, avatar_url: 'http://cdn.example.com/alex.jpg' })).toMatch(/^Photo/);
   });
 
-  it('show_credit doit être un booléen', () => {
-    expect(profileFrom({ ...profile, show_credit: false })).toMatchObject({ show_credit: false });
-    expect(profileFrom({ ...profile, show_credit: 'non' })).toBe('show_credit doit valoir true ou false.');
-  });
 });

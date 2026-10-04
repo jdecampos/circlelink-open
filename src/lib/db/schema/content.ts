@@ -16,6 +16,8 @@ export const profile = pgTable(
     theme: text('theme').notNull().default('clair'),
     linkShape: text('link_shape').notNull().default('pilule'),
     avatarUrl: text('avatar_url').notNull().default(''),
+    // Abandonnée : la mention « Propulsé par CircleLink » est toujours affichée. Gardée en base
+    // pour qu'un ancien conteneur, pendant la bascule d'un déploiement, la lise encore sans erreur.
     showCredit: boolean('show_credit').notNull().default(true),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },

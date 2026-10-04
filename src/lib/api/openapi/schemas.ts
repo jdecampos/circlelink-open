@@ -32,7 +32,6 @@ export const schemas = {
       theme: { type: 'string', enum: ['clair', 'sombre'] },
       link_shape: { type: 'string', enum: ['pilule', 'arrondi', 'carre'] },
       avatar_url: { type: 'string', maxLength: 2048, description: 'Photo : URL `https:` d’une image ; vide pour afficher l’initiale du nom.', example: 'https://example.com/photo.jpg' },
-      show_credit: { type: 'boolean', description: 'Mention « Propulsé par CircleLink » en pied de page.', default: true },
     },
   },
   Category: {

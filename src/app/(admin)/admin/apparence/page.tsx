@@ -18,7 +18,6 @@ function toForm(p: Profile) {
     theme: p.theme,
     link_shape: p.link_shape,
     avatar_url: p.avatar_url,
-    show_credit: p.show_credit,
     socials: Object.fromEntries(NETWORKS.map((n) => [n.id, (p.socials?.[n.id] ?? '').replace(/^mailto:/, '')])),
   };
 }
@@ -152,14 +151,7 @@ function AppearanceForm({ profile }: { profile: Profile }) {
 
       <SocialsCard socials={f.socials} onChange={(s) => set('socials', s)} />
 
-      <StyleCard
-        theme={f.theme}
-        shape={f.link_shape}
-        credit={f.show_credit}
-        onTheme={(v) => set('theme', v)}
-        onShape={(v) => set('link_shape', v)}
-        onCredit={(v) => set('show_credit', v)}
-      />
+      <StyleCard theme={f.theme} shape={f.link_shape} onTheme={(v) => set('theme', v)} onShape={(v) => set('link_shape', v)} />
 
       <div className="form-bar">
         {dirty && <span className="dirty">Modifications non enregistrées</span>}

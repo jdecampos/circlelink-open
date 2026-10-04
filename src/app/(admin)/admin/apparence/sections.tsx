@@ -61,14 +61,14 @@ const tick = (
   </span>
 );
 
-type StyleProps = { theme: Theme; shape: LinkShape; credit: boolean; onTheme: (t: Theme) => void; onShape: (s: LinkShape) => void; onCredit: (v: boolean) => void };
+type StyleProps = { theme: Theme; shape: LinkShape; onTheme: (t: Theme) => void; onShape: (s: LinkShape) => void };
 
-export function StyleCard({ theme, shape, credit, onTheme, onShape, onCredit }: StyleProps) {
+export function StyleCard({ theme, shape, onTheme, onShape }: StyleProps) {
   return (
     <section className="card" aria-labelledby="apA">
       <div className="card-head">
         <h2 id="apA">Apparence</h2>
-        <p>Thème, forme des liens et mention en pied de page.</p>
+        <p>Thème et forme des liens.</p>
       </div>
       <fieldset className="choices">
         <legend>Thème</legend>
@@ -114,11 +114,6 @@ export function StyleCard({ theme, shape, credit, onTheme, onShape, onCredit }: 
           </label>
         ))}
       </fieldset>
-      <label className="switch">
-        <input type="checkbox" checked={credit} onChange={(e) => onCredit(e.target.checked)} />
-        <span className="switch-track" aria-hidden="true" />
-        <span>Afficher « Propulsé par CircleLink » en bas de ma page</span>
-      </label>
     </section>
   );
 }

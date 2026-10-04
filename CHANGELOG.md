@@ -9,6 +9,11 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Versions : [S
 - Newsletter par connecteurs : **Brevo, Mailchimp, MailerLite, Kit**, branchés depuis l’espace (Espace → Newsletter), clé API vérifiée auprès du service puis chiffrée en base.
 - Interrupteur pour afficher ou masquer l’inscription sur la page, sans redémarrage.
 
+### Modifié
+
+- La mention « Propulsé par CircleLink » est toujours affichée en bas de la page : l’interrupteur de l’espace disparaît (et le champ `show_credit` de l’API).
+- Formulaires : l’erreur d’un champ s’affiche à côté de son libellé, sans décaler la page ; l’aide de l’identifiant devient une icône.
+
 ### Retiré
 
 - **Mautic** et ses variables `MAUTIC_*`. Après la mise à jour, la newsletter est désactivée tant qu’aucun service n’est connecté ; les inscriptions déjà en file sont gardées 24 h et partent vers le service connecté.

@@ -153,13 +153,12 @@ export default function LinkPage({ data }: { data: PageData }) {
       </main>
 
       <footer className="footer">
-        {profile.show_credit && (
-          <a href={REPO_URL} target="_blank" rel="noopener">
-            <span>Propulsé par</span>
-            <Mark size={18} />
-            <span>{PRODUCT_NAME}</span>
-          </a>
-        )}
+        {/* mention toujours affichée : pas de réglage dans l'espace */}
+        <a href={REPO_URL} target="_blank" rel="noopener">
+          <span>Propulsé par</span>
+          <Mark size={18} />
+          <span>{PRODUCT_NAME}</span>
+        </a>
         <a href={authed ? '/admin' : '/connexion'}>{authed ? 'Mon espace' : 'Connexion'}</a>
       </footer>
       <Toasts api={toasts} />

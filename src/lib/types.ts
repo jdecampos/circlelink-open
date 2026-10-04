@@ -14,8 +14,6 @@ export type Profile = {
   link_shape: LinkShape;
   /** Photo par URL `https:` ; vide : l'initiale du nom. */
   avatar_url: string;
-  /** Mention « Propulsé par CircleLink » en pied de page. */
-  show_credit: boolean;
 };
 
 export type Category = {
