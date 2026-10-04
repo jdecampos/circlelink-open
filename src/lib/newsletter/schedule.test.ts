@@ -22,7 +22,7 @@ describe('reprise interne de la file', () => {
     const run = vi
       .fn()
       .mockImplementationOnce(() => new Promise<void>((r) => (release = r)))
-      .mockRejectedValueOnce(new Error('Mautic injoignable'))
+      .mockRejectedValueOnce(new Error('service injoignable'))
       .mockResolvedValue(undefined);
     const onError = vi.fn();
     scheduleQueueRetry(run, onError);

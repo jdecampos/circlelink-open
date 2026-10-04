@@ -40,7 +40,7 @@ export type PageData = {
   profile: Profile;
   categories: Category[];
   links: LinkItem[];
-  /** Mautic configuré : bloc « Recevoir les nouveautés » affiché. */
+  /** Newsletter activée dans l'espace, service connecté : bloc « Recevoir les nouveautés » affiché. */
   newsletter: boolean;
 };
 

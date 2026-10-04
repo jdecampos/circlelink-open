@@ -38,11 +38,6 @@ SMTP_USER=
 SMTP_PASSWORD=
 SMTP_FROM=
 
-# Facultatif : newsletter Mautic
-MAUTIC_URL=
-MAUTIC_USERNAME=
-MAUTIC_PASSWORD=
-MAUTIC_SEGMENT_ALIAS=
 ENV
 
 echo ".env écrit pour ${url%/}. Lance maintenant : docker compose up -d"

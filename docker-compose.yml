@@ -5,7 +5,8 @@
 # Ailleurs : ./scripts/init-env.sh https://mondomaine.fr écrit ces mêmes variables
 # dans .env, puis docker compose up -d.
 #
-# SMTP et Mautic sont facultatifs : laisse leurs variables vides pour s'en passer.
+# SMTP est facultatif : laisse ses variables vides pour t'en passer. La newsletter se
+# branche depuis l'espace (Newsletter), sans variable.
 
 services:
   app:
@@ -22,10 +23,6 @@ services:
       SMTP_USER: ${SMTP_USER:-}
       SMTP_PASSWORD: ${SMTP_PASSWORD:-}
       SMTP_FROM: ${SMTP_FROM:-}
-      MAUTIC_URL: ${MAUTIC_URL:-}
-      MAUTIC_USERNAME: ${MAUTIC_USERNAME:-}
-      MAUTIC_PASSWORD: ${MAUTIC_PASSWORD:-}
-      MAUTIC_SEGMENT_ALIAS: ${MAUTIC_SEGMENT_ALIAS:-}
     depends_on:
       db:
         condition: service_healthy

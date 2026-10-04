@@ -4,7 +4,8 @@ import { describe, expect, it } from 'vitest';
 import { PRODUCT_NAME, displayName } from './brand';
 
 // Constitution VII.4 et US-006 : aucune marque ni donnée d'une instance réelle dans le dépôt.
-const FORBIDDEN = [/circle\s*builder/i, /circlebuilder\.fr/i, /circlelink\.fr/i, /kombiz/i, /lowkode/i, /j[ée]r[ée]my/i];
+// Mautic : retiré par la spec 002, il ne doit pas revenir dans le code ni la documentation.
+const FORBIDDEN = [/circle\s*builder/i, /circlebuilder\.fr/i, /circlelink\.fr/i, /kombiz/i, /lowkode/i, /j[ée]r[ée]my/i, /mautic/i];
 const ROOTS = ['src', 'public', 'docs', 'README.md'];
 const TEXT = /\.(tsx?|css|svg|md|json|txt|html|mjs|js)$/;
 

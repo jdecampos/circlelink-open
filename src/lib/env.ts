@@ -2,7 +2,7 @@
 
 type Env = Record<string, string | undefined>;
 
-/** Variables sans lesquelles l'instance ne peut pas démarrer. SMTP_* et MAUTIC_* sont facultatives. */
+/** Variables sans lesquelles l'instance ne peut pas démarrer. SMTP_* est facultative ; la newsletter se règle dans l'espace. */
 export const REQUIRED_ENV = ['SITE_URL', 'DATABASE_URL', 'DATABASE_MIGRATION_URL', 'BETTER_AUTH_SECRET'] as const;
 
 const HINT = 'Renseigne-la dans les variables d’environnement de l’application, ou lance ./scripts/init-env.sh <url> pour générer un fichier .env.';

@@ -60,7 +60,6 @@ Toutes les variables sont lues au démarrage : modifie-les, puis redémarre (Coo
 | `SITE_URL` | oui, fournie par Coolify ou `init-env.sh` | URL publique : balises de partage, emails, `robots.txt`, sitemap |
 | `DATABASE_URL`, `DATABASE_MIGRATION_URL`, `BETTER_AUTH_SECRET` | oui, générées | Base et sessions |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM` | non | Lien magique et mot de passe oublié |
-| `MAUTIC_URL`, `MAUTIC_USERNAME`, `MAUTIC_PASSWORD`, `MAUTIC_SEGMENT_ALIAS` | non | Newsletter |
 
 Une variable obligatoire absente arrête le démarrage avec un message qui la nomme.
 
@@ -76,14 +75,25 @@ docker compose exec app node scripts/reset-password.mjs ton@email.fr
 
 La commande affiche un lien à usage unique, valable 15 minutes. Sur Coolify, lance `node scripts/reset-password.mjs ton@email.fr` dans le **Terminal** du service app.
 
-### Newsletter Mautic (facultatif)
+### Newsletter (facultatif)
 
-Sans Mautic, la page n’affiche pas de bloc newsletter. Avec Mautic, chaque inscription crée ou met à jour un contact, avec le tag `circleLink` et un tag de provenance (`source-tiktok`, `source-instagram`…). Si Mautic ne répond pas, l’inscription attend dans une file que l’app retente elle-même toutes les 15 minutes, pendant 24 h.
+La newsletter se branche **depuis ton espace**, sans toucher au serveur : **Espace → Newsletter**.
 
-1. Dans Mautic, **Configuration → Paramètres de l’API** : active l’API **et** l’authentification HTTP basique.
-2. Crée un utilisateur dédié, avec un rôle limité aux contacts (lecture, création, modification).
-3. Crée le segment des inscrits joignables (alias `circlelink-joignables`, ou celui de `MAUTIC_SEGMENT_ALIAS`) : « tag = circleLink » ET « désinscrit (email) = non ». C’est lui que compte la page Statistiques.
-4. Renseigne `MAUTIC_URL`, `MAUTIC_USERNAME` et `MAUTIC_PASSWORD`, puis redémarre.
+1. Choisis ton service : **Brevo**, **Mailchimp**, **MailerLite** ou **Kit**.
+2. Colle ta clé API, puis **Vérifier** : CircleLink affiche les listes de ton compte.
+3. Choisis la liste qui recevra les inscrits, et **Enregistrer**.
+4. L’interrupteur « Afficher l’inscription sur ma page » ajoute ou retire le bloc « Recevoir les nouveautés », tout de suite.
+
+| Service | Où créer la clé | Les inscrits arrivent dans |
+|---|---|---|
+| Brevo | Paramètres → SMTP & API → Clés API (clé `xkeysib-…`, pas la clé SMTP) | une liste |
+| Mailchimp | Profil → Extras → Clés API (la clé se termine par `-us21`, par exemple) | une audience, avec les tags `circlelink` et `source-tiktok`, `source-instagram`… |
+| MailerLite | Intégrations → API → Générer un nouveau jeton | un groupe |
+| Kit | Paramètres → Développeur → clé API v4 | un tag |
+
+La clé est chiffrée en base et n’est plus jamais affichée (seulement ses 4 derniers caractères). Si le service ne répond pas, l’inscription attend dans une file que l’app retente toutes les 15 minutes, pendant 24 h ; la page **Statistiques** affiche le nombre d’inscrits de ta liste et les inscriptions en attente. Si tu changes `BETTER_AUTH_SECRET`, reconnecte ton service.
+
+Il n’y a pas encore de double opt-in (email de confirmation) : l’inscription est directe.
 
 ### API
 

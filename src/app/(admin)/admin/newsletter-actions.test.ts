@@ -68,7 +68,7 @@ describe('actions Newsletter, propriétaire connectée', () => {
   });
 
   it('service inconnu, clé refusée : messages clairs', async () => {
-    expect(await actions.checkNewsletterKey('mautic' as never, KEY)).toEqual({ ok: false, error: 'Service inconnu.' });
+    expect(await actions.checkNewsletterKey('inconnu' as never, KEY)).toEqual({ ok: false, error: 'Service inconnu.' });
     listAudiences.mockRejectedValue(new ConnectorError('key', 'Clé refusée par Brevo : vérifie qu’elle est complète et active.'));
     expect(await actions.checkNewsletterKey('brevo', KEY)).toMatchObject({ ok: false, error: expect.stringContaining('Clé refusée par Brevo') });
   });

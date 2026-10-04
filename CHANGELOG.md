@@ -4,6 +4,15 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Versions : [S
 
 ## [Non publié]
 
+### Ajouté
+
+- Newsletter par connecteurs : **Brevo, Mailchimp, MailerLite, Kit**, branchés depuis l’espace (Espace → Newsletter), clé API vérifiée auprès du service puis chiffrée en base.
+- Interrupteur pour afficher ou masquer l’inscription sur la page, sans redémarrage.
+
+### Retiré
+
+- **Mautic** et ses variables `MAUTIC_*`. Après la mise à jour, la newsletter est désactivée tant qu’aucun service n’est connecté ; les inscriptions déjà en file sont gardées 24 h et partent vers le service connecté.
+
 ## [1.0.1]
 
 ### Modifié
