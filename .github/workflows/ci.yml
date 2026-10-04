@@ -6,6 +6,7 @@ on:
   pull_request:
   push:
     branches: [main, develop]
+  workflow_dispatch: # relance à la main (onglet Actions)
 
 permissions:
   contents: read
