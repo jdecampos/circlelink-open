@@ -108,14 +108,14 @@ export default function LinkPage({ data }: { data: PageData }) {
           <SiteLogo profile={profile} />
         </a>
         <div className="topbar-actions">
+          {/* icônes seules : la place reste au logo, quelle que soit sa largeur */}
           {authed && (
-            <a className="btn btn-secondary btn-sm" href="/admin">
-              Modifier ma page
+            <a className="btn btn-secondary btn-round" href="/admin" aria-label="Modifier ma page" title="Modifier ma page">
+              <Icon name="edit" sm />
             </a>
           )}
-          <button className="btn btn-secondary btn-sm" type="button" onClick={share}>
+          <button className="btn btn-secondary btn-round" type="button" onClick={share} aria-label="Partager" title="Partager">
             <Icon name="share" sm />
-            Partager
           </button>
         </div>
       </header>

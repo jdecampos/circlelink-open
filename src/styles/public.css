@@ -8,10 +8,10 @@
 
   /* barre haute */
   .topbar { display: flex; align-items: center; gap: var(--s2); padding: var(--s3) 0; }
-  .topbar .brand { min-height: 44px; display: inline-flex; align-items: center; }
-  .site-logo { display: block; height: 32px; width: auto; max-width: 180px; object-fit: contain; }
+  .topbar .brand { min-height: 44px; display: inline-flex; align-items: center; min-width: 0; }
+  .topbar .btn-round { width: 44px; min-height: 44px; padding: 0; border-radius: 50%; flex: none; }
+  .site-logo { display: block; height: 32px; width: auto; max-width: min(200px, 100%); object-fit: contain; object-position: left center; }
   .topbar-actions { margin-left: auto; display: flex; gap: var(--s2); }
-  .topbar .btn-sm { min-height: 40px; }
 
   /* gabarit */
   /* minmax(0,1fr) : la colonne ne s'élargit jamais à la largeur du rail d'onglets (sinon tout déborde à droite) */
