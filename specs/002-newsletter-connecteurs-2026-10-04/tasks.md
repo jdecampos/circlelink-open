@@ -6,10 +6,10 @@
 
 ## Fondations
 
-- [ ] T-001 — 🔑 Valider la spec (double opt-in, emplacement de la page)  (toutes)
+- [x] T-001 — 🔑 Valider la spec (double opt-in, emplacement de la page)  (toutes)
       Fait quand : les deux lignes « À valider » des Clarifications sont tranchées.
 
-- [ ] T-002 — Amender la constitution VII.3  (toutes)
+- [x] T-002 — Amender la constitution VII.3  (toutes)
       Fichiers : specs/constitution.md
       Fait quand : VII.3 couvre les clés saisies dans l’espace (chiffrées, jamais renvoyées, adresses fixes) avec un CONTRÔLE exécutable.
 

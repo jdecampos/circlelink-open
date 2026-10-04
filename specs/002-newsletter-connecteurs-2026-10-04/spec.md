@@ -93,5 +93,5 @@ Critères d’acceptation :
 | Quels services d’abord ? | Brevo, Mailchimp, MailerLite, Kit (décidé le 2026-10-04). |
 | Clé API ou OAuth ? | Clé API : chaque service la propose, et OAuth demanderait une application déclarée par instance. |
 | Où vit la clé ? | En base, chiffrée avec une clé dérivée de `BETTER_AUTH_SECRET` (HKDF). Changer ce secret oblige à reconnecter le service : l’écran le signale. |
-| Double opt-in ? | **À valider.** Proposition : pas en v1 (inscription directe, comme avec Mautic). Mailchimp le permet par un simple statut `pending`, Brevo exige un modèle d’email : on l’ajoutera service par service. |
-| Où est la page de réglage ? | **À valider.** Proposition : une entrée « Newsletter » dans le menu de l’espace, entre « Profil & apparence » et « Statistiques ». |
+| Double opt-in ? | Pas en v1 (retenu le 2026-10-04, au lancement de l’implémentation) (inscription directe, comme avec Mautic). Mailchimp le permet par un simple statut `pending`, Brevo exige un modèle d’email : on l’ajoutera service par service. |
+| Où est la page de réglage ? | Retenu le 2026-10-04 : une entrée « Newsletter » dans le menu de l’espace, entre « Profil & apparence » et « Statistiques ». |

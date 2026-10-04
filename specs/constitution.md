@@ -149,24 +149,35 @@ CONTRÔLE  : un test compte les requêtes : 20 rendus consécutifs de `/` décle
 
 DÉCISION  : Aucune variable `NEXT_PUBLIC_*` : tout, y compris `SITE_URL`, est lu
             à l'exécution côté serveur, pour qu'une même image serve n'importe
-            quel domaine. Les secrets ne sont ni des arguments de build, ni des
-            fichiers de l'image, ni écrits dans le dépôt : ils sont générés par
-            Coolify (`SERVICE_PASSWORD_*`) ou par `scripts/init-env.sh` dans un
-            `.env` non versionné. N'accepte dans un `href` que les URL `https:`,
-            `http:` et `mailto:`, et pour la photo de profil que `https:`,
-            validées côté serveur et en base.
-DATE      : 2026-10-04
+            quel domaine. Les secrets d'infrastructure ne sont ni des arguments de
+            build, ni des fichiers de l'image, ni écrits dans le dépôt : ils sont
+            générés par l'hébergeur (`SERVICE_PASSWORD_*` de Coolify) ou par
+            `scripts/init-env.sh` dans un `.env` non versionné.
+            Les clés de service saisies dans l'espace (connecteurs newsletter) sont
+            stockées en base **chiffrées** (AES-256-GCM, clé dérivée de
+            `BETTER_AUTH_SECRET` par HKDF), jamais renvoyées au navigateur, jamais
+            journalisées. Le code n'appelle que des adresses fixes, écrites dans le
+            code : aucune URL saisie n'est requêtée par le serveur.
+            N'accepte dans un `href` que les URL `https:`, `http:` et `mailto:`, et
+            pour la photo de profil que `https:`, validées côté serveur et en base.
+DATE      : 2026-10-04 (amendé le 2026-10-04 pour la spec 002, connecteurs newsletter)
 SYMPTÔME  : Choix initial du projet. Une URL figée au build faisait annoncer le
             domaine de production par une instance de préproduction.
+            Amendement 002 : la propriétaire branche son service d'emailing depuis
+            l'espace, sans accès au serveur ; sa clé doit donc vivre en base.
 COÛT      : Un secret en `NEXT_PUBLIC_` part dans le bundle de chaque visiteur ; un
             secret passé au build reste dans une couche de l'image ; un secret
-            versionné est public pour toujours. Une URL `javascript:` enregistrée
+            versionné est public pour toujours. Une clé de service en clair en base
+            fuit avec la première sauvegarde volée. Une URL saisie et appelée par le
+            serveur ouvre ses réseaux internes. Une URL `javascript:` enregistrée
             devient une faille XSS sur la page publique.
 CONTRÔLE  : `grep -rn NEXT_PUBLIC_ src Dockerfile .env.example` ne remonte rien ;
             `docker history --no-trunc` de l'image ne contient aucun secret ;
-            `gitleaks detect` (CI) ne remonte rien sur tout l'historique ; chaque
-            écriture d'URL dans `actions.ts` passe par `isSafeUrl` ; les
-            contraintes `links_url_check` et `profile_avatar_url_check` existent
+            `gitleaks` (CI) ne remonte rien sur tout l'historique ; les tests des
+            actions Newsletter vérifient qu'aucune réponse ni donnée de l'espace ne
+            contient la clé, et que la colonne `key_ciphertext` ne la contient pas en
+            clair ; chaque écriture d'URL dans `actions.ts` passe par `isSafeUrl` ;
+            les contraintes `links_url_check` et `profile_avatar_url_check` existent
             en base.
 
 ### VII.4 — Aucune donnée personnelle dans le dépôt
@@ -199,5 +210,5 @@ Avant chaque commit, on vérifie (cette liste est la somme des CONTRÔLE ci-dess
 - [ ] VI — aucune redirection côté public ; les `href` sont les URL en base
 - [ ] VII.1 — actions de l'admin et routes de `/api/v1` refusées sans propriétaire ; `install()` refusée hors première installation ; `circlelink_app` ne peut pas modifier le schéma
 - [ ] VII.2 — 20 rendus de `/` → au plus 1 lecture en base ; aucun appel `/api/auth/*` pour un visiteur ; pas d'API dynamique dans `(public)`
-- [ ] VII.3 — aucune variable `NEXT_PUBLIC_*` ; aucun secret dans l'image ni dans le dépôt ; URL passées par `isSafeUrl`
+- [ ] VII.3 — aucune variable `NEXT_PUBLIC_*` ; aucun secret dans l'image ni dans le dépôt ; clés de service chiffrées et jamais renvoyées ; URL passées par `isSafeUrl`
 - [ ] VII.4 — aucun terme interdit ni email réel dans le dépôt
