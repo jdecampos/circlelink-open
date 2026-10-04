@@ -2,7 +2,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { mockFetch } from '@/test/fetch';
 import { mailerlite } from './mailerlite';
 
-const KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.jeton-de-test-mailerlite';
+// Fausse clé assemblée à l'exécution, pour ne pas déclencher les scanners de secrets.
+const KEY = 'jeton-de-test-mailerlite-'.repeat(2);
 const call = { timeoutMs: 1500 };
 const sub = { email: 'alex@example.com', source: 'direct' as const };
 afterEach(() => vi.unstubAllGlobals());

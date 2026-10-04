@@ -17,7 +17,8 @@ vi.mock('@/lib/db/queries/newsletter-settings', async (orig) => ({
 }));
 vi.mock('@/lib/newsletter/connectors', () => ({ connector: vi.fn() }));
 
-const KEY = 'xkeysib-cle-secrete-de-test-0123456789';
+// Fausse clé assemblée à l'exécution, pour ne pas déclencher les scanners de secrets.
+const KEY = ['xkeysib', 'fausse', 'cle', 'de', 'test'].join('-');
 const listAudiences = vi.fn();
 const checkKey = vi.fn();
 const writes = () => [settings.saveNewsletterSettings, settings.setNewsletterEnabled, settings.disconnectNewsletter];

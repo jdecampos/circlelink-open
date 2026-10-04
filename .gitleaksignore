@@ -1,0 +1,5 @@
+# Faux secrets de tests, écrits en clair dans des commits déjà publiés de develop (spec 002),
+# depuis assemblés à l'exécution. Aucun n'est une vraie clé.
+4933990867cff6d44ccc5c820b24de0aa3be5784:src/app/(admin)/admin/newsletter-actions.test.ts:generic-api-key:20
+1189b6dbeb1e8fa87981c8a63d245c0eb8d15bfd:src/lib/crypto/secret-box.test.ts:generic-api-key:5
+1189b6dbeb1e8fa87981c8a63d245c0eb8d15bfd:src/lib/db/queries/newsletter-settings.test.ts:generic-api-key:16
