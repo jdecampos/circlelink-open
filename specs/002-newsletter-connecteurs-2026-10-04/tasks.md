@@ -13,11 +13,11 @@
       Fichiers : specs/constitution.md
       Fait quand : VII.3 couvre les clés saisies dans l’espace (chiffrées, jamais renvoyées, adresses fixes) avec un CONTRÔLE exécutable.
 
-- [ ] T-003 — Chiffrement des clés  (US-002)
+- [x] T-003 — Chiffrement des clés  (US-002)
       Fichiers : src/lib/crypto/secret-box.ts (+ test)
       Fait quand : aller-retour testé ; un texte altéré ou un autre secret lève une erreur ; deux chiffrements du même texte diffèrent.
 
-- [ ] T-004 — Table `newsletter_settings` et requêtes  (US-001, US-002)
+- [x] T-004 — Table `newsletter_settings` et requêtes  (US-001, US-002)
       Fichiers : src/lib/db/schema/newsletter.ts, drizzle/0004_*.sql, src/lib/db/queries/newsletter-settings.ts (+ test)
       Fait quand : la base refuse `enabled = true` sans service ni liste ; la lecture renvoie la clé déchiffrée côté serveur seulement.
 
