@@ -7,7 +7,7 @@ import { ErrorSummary, FieldError, InfoTip, type FieldErr } from '@/components/f
 import { saveProfile } from '../actions';
 import { useAdmin } from '../AdminShell';
 import ApiKeyCard from './ApiKeyCard';
-import { PhotoField, SocialsCard, StyleCard } from './sections';
+import { LogoCard, PhotoField, SocialsCard, StyleCard } from './sections';
 
 function toForm(p: Profile) {
   return {
@@ -18,6 +18,8 @@ function toForm(p: Profile) {
     theme: p.theme,
     link_shape: p.link_shape,
     avatar_url: p.avatar_url,
+    logo_url: p.logo_url,
+    logo_dark_url: p.logo_dark_url,
     socials: Object.fromEntries(NETWORKS.map((n) => [n.id, (p.socials?.[n.id] ?? '').replace(/^mailto:/, '')])),
   };
 }
@@ -148,6 +150,8 @@ function AppearanceForm({ profile }: { profile: Profile }) {
           <PhotoField value={f.avatar_url} onChange={(v) => set('avatar_url', v)} />
         </div>
       </section>
+
+      <LogoCard logos={{ logo_url: f.logo_url, logo_dark_url: f.logo_dark_url }} onChange={(k, v) => set(k, v)} />
 
       <SocialsCard socials={f.socials} onChange={(s) => set('socials', s)} />
 

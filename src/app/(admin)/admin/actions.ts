@@ -122,6 +122,8 @@ export type ProfileInput = {
   theme: Theme;
   link_shape: LinkShape;
   avatar_url?: string;
+  logo_url?: string;
+  logo_dark_url?: string;
 };
 
 export async function saveProfile(input: ProfileInput): Promise<ActionResult> {

@@ -8,6 +8,7 @@ import { Toasts, useToasts } from '@/components/Toasts';
 import Feed from './Feed';
 import Newsletter from './Newsletter';
 import ProfileHeader from './ProfileHeader';
+import SiteLogo from './SiteLogo';
 import { useClickTracking } from './useClickTracking';
 
 type Tab = { id: string; name: string; n: number };
@@ -104,7 +105,7 @@ export default function LinkPage({ data }: { data: PageData }) {
     <div className="page">
       <header className="topbar">
         <a className="brand" href="#" aria-label="Haut de page">
-          <Mark size={32} />
+          <SiteLogo profile={profile} />
         </a>
         <div className="topbar-actions">
           {authed && (

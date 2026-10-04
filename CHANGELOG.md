@@ -8,6 +8,7 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Versions : [S
 
 - Newsletter par connecteurs : **Brevo, Mailchimp, MailerLite, Kit**, branchés depuis l’espace (Espace → Newsletter), clé API vérifiée auprès du service puis chiffrée en base.
 - Interrupteur pour afficher ou masquer l’inscription sur la page, sans redémarrage.
+- Logo personnalisable en haut à gauche de la page, un pour le thème clair et un pour le thème sombre (Profil & apparence → Logo ; champs `logo_url` et `logo_dark_url` de l’API).
 
 ### Modifié
 

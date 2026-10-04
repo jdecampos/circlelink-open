@@ -16,6 +16,9 @@ export const profile = pgTable(
     theme: text('theme').notNull().default('clair'),
     linkShape: text('link_shape').notNull().default('pilule'),
     avatarUrl: text('avatar_url').notNull().default(''),
+    // Logo en haut à gauche de la page, un par thème ; vides : le logo de CircleLink.
+    logoUrl: text('logo_url').notNull().default(''),
+    logoDarkUrl: text('logo_dark_url').notNull().default(''),
     // Abandonnée : la mention « Propulsé par CircleLink » est toujours affichée. Gardée en base
     // pour qu'un ancien conteneur, pendant la bascule d'un déploiement, la lise encore sans erreur.
     showCredit: boolean('show_credit').notNull().default(true),
@@ -34,6 +37,8 @@ export const profile = pgTable(
     check('profile_theme_check', sql`${t.theme} in ('clair', 'sombre')`),
     check('profile_link_shape_check', sql`${t.linkShape} in ('pilule', 'arrondi', 'carre')`),
     check('profile_avatar_url_check', sql`char_length(${t.avatarUrl}) <= 2048 and (${t.avatarUrl} = '' or ${t.avatarUrl} ~* '^https://[^\\s/]+\\.[^\\s]+$')`),
+    check('profile_logo_url_check', sql`char_length(${t.logoUrl}) <= 2048 and (${t.logoUrl} = '' or ${t.logoUrl} ~* '^https://[^\\s/]+\\.[^\\s]+$')`),
+    check('profile_logo_dark_url_check', sql`char_length(${t.logoDarkUrl}) <= 2048 and (${t.logoDarkUrl} = '' or ${t.logoDarkUrl} ~* '^https://[^\\s/]+\\.[^\\s]+$')`),
   ],
 );
 

@@ -28,6 +28,48 @@ export function PhotoField({ value, onChange }: { value: string; onChange: (v: s
   );
 }
 
+const LOGO_FIELDS = [
+  { id: 'logo_url', label: 'Logo pour le thème clair', hint: 'Sur fond clair : un logo foncé.' },
+  { id: 'logo_dark_url', label: 'Logo pour le thème sombre', hint: 'Sur fond sombre : un logo clair. Vide : celui du thème clair.' },
+] as const;
+
+type Logos = { logo_url: string; logo_dark_url: string };
+
+/** Logo en haut à gauche de la page, un par thème ; vides : le logo de CircleLink. */
+export function LogoCard({ logos, onChange }: { logos: Logos; onChange: (k: keyof Logos, v: string) => void }) {
+  return (
+    <section className="card" aria-labelledby="apL">
+      <div className="card-head">
+        <h2 id="apL">Logo</h2>
+        <p>En haut à gauche de ta page. Adresse https:// d’une image (SVG ou PNG transparent). Vide : le logo de CircleLink.</p>
+      </div>
+      <div className="form-grid two">
+        {LOGO_FIELDS.map((f) => (
+          <div className="field" key={f.id}>
+            <label className="label" htmlFor={'ap-' + f.id}>
+              {f.label}
+            </label>
+            <input
+              className="input"
+              id={'ap-' + f.id}
+              type="url"
+              inputMode="url"
+              maxLength={2048}
+              placeholder="https://"
+              aria-describedby={'ap-' + f.id + '-hint'}
+              value={logos[f.id]}
+              onChange={(e) => onChange(f.id, e.target.value)}
+            />
+            <p className="hint" id={'ap-' + f.id + '-hint'}>
+              {f.hint}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function SocialsCard({ socials, onChange }: { socials: Record<string, string>; onChange: (s: Record<string, string>) => void }) {
   return (
     <section className="card" aria-labelledby="apS">

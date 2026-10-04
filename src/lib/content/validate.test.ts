@@ -62,3 +62,15 @@ describe('photo de profil', () => {
   });
 
 });
+
+describe('logos', () => {
+  it('un par thème, https: seulement ; vides par défaut', () => {
+    expect(profileFrom(profile)).toMatchObject({ logo_url: '', logo_dark_url: '' });
+    expect(profileFrom({ ...profile, logo_url: 'cdn.example.com/logo.svg', logo_dark_url: 'https://cdn.example.com/blanc.svg' })).toMatchObject({
+      logo_url: 'https://cdn.example.com/logo.svg',
+      logo_dark_url: 'https://cdn.example.com/blanc.svg',
+    });
+    expect(profileFrom({ ...profile, logo_url: 'javascript:alert(1)' })).toMatch(/^Logo \(thème clair\)/);
+    expect(profileFrom({ ...profile, logo_dark_url: 'http://cdn.example.com/a.svg' })).toMatch(/^Logo \(thème sombre\)/);
+  });
+});

@@ -8,7 +8,8 @@
 
   /* barre haute */
   .topbar { display: flex; align-items: center; gap: var(--s2); padding: var(--s3) 0; }
-  .topbar .brand { min-height: 44px; }
+  .topbar .brand { min-height: 44px; display: inline-flex; align-items: center; }
+  .site-logo { display: block; height: 32px; width: auto; max-width: 180px; object-fit: contain; }
   .topbar-actions { margin-left: auto; display: flex; gap: var(--s2); }
   .topbar .btn-sm { min-height: 40px; }
 

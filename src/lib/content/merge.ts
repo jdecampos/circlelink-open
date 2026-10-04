@@ -2,7 +2,7 @@ import type { LinkRow } from '@/lib/db/queries/links';
 import type { LinkItem, Profile } from '@/lib/types';
 import { linkFrom, profileFrom } from './validate';
 
-const PROFILE_KEYS = ['name', 'handle', 'bio', 'location', 'theme', 'link_shape', 'avatar_url'] as const;
+const PROFILE_KEYS = ['name', 'handle', 'bio', 'location', 'theme', 'link_shape', 'avatar_url', 'logo_url', 'logo_dark_url'] as const;
 const LINK_KEYS = ['type', 'category_id', 'title', 'url', 'description', 'price', 'visible'] as const;
 
 /** Modification partielle du profil : seuls les champs envoyés changent, réseau par réseau pour socials. */

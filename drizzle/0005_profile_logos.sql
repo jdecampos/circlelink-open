@@ -1,0 +1,4 @@
+ALTER TABLE "profile" ADD COLUMN "logo_url" text DEFAULT '' NOT NULL;--> statement-breakpoint
+ALTER TABLE "profile" ADD COLUMN "logo_dark_url" text DEFAULT '' NOT NULL;--> statement-breakpoint
+ALTER TABLE "profile" ADD CONSTRAINT "profile_logo_url_check" CHECK (char_length("profile"."logo_url") <= 2048 and ("profile"."logo_url" = '' or "profile"."logo_url" ~* '^https://[^\s/]+\.[^\s]+$'));--> statement-breakpoint
+ALTER TABLE "profile" ADD CONSTRAINT "profile_logo_dark_url_check" CHECK (char_length("profile"."logo_dark_url") <= 2048 and ("profile"."logo_dark_url" = '' or "profile"."logo_dark_url" ~* '^https://[^\s/]+\.[^\s]+$'));

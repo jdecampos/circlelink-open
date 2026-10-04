@@ -10,7 +10,7 @@ Ta page « lien en bio » à toi, sur ton serveur : un profil, tes liens classé
 </p>
 
 - **Page publique** `/` : photo, nom, bio, réseaux sociaux, onglets par catégorie, carte « À la une », cartes formation, liens, newsletter facultative.
-- **Espace** `/admin` : liens (ajout, édition, ordre, masquage, suppression avec annulation), catégories, profil et apparence (thème clair ou sombre, forme des liens, photo), statistiques (clics par lien, par catégorie, par provenance : TikTok, Instagram, Facebook…), aperçu en direct.
+- **Espace** `/admin` : liens (ajout, édition, ordre, masquage, suppression avec annulation), catégories, profil et apparence (thème clair ou sombre, forme des liens, photo, logo pour chaque thème), statistiques (clics par lien, par catégorie, par provenance : TikTok, Instagram, Facebook…), aperçu en direct.
 - **API** `/api/v1` : tout le contenu s’écrit aussi par une API REST, avec une clé.
 
 ## Installer

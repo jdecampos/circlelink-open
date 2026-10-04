@@ -99,17 +99,19 @@ describe('catégories', () => {
 
 describe('profil', () => {
   it('crée puis met à jour la ligne unique', async () => {
-    const p = { name: 'J', handle: 'j', bio: '', location: '', socials: {}, theme: 'clair' as const, link_shape: 'pilule' as const, avatar_url: '' };
+    const p = { name: 'J', handle: 'j', bio: '', location: '', socials: {}, theme: 'clair' as const, link_shape: 'pilule' as const, avatar_url: '', logo_url: '', logo_dark_url: '' };
     await updateProfile(p);
-    await updateProfile({ ...p, name: 'Alex', theme: 'sombre', avatar_url: 'https://cdn.example.com/alex.jpg' });
+    await updateProfile({ ...p, name: 'Alex', theme: 'sombre', avatar_url: 'https://cdn.example.com/alex.jpg', logo_dark_url: 'https://cdn.example.com/logo-blanc.svg' });
     const rows = await db.select().from(profile);
     expect(rows).toHaveLength(1);
-    expect(rows[0]).toMatchObject({ id: 1, name: 'Alex', theme: 'sombre', avatarUrl: 'https://cdn.example.com/alex.jpg' });
+    expect(rows[0]).toMatchObject({ id: 1, name: 'Alex', theme: 'sombre', avatarUrl: 'https://cdn.example.com/alex.jpg', logoDarkUrl: 'https://cdn.example.com/logo-blanc.svg' });
   });
 
-  it('la base refuse une photo javascript: ou http:', async () => {
+  it('la base refuse une photo ou un logo javascript: ou http:', async () => {
     for (const bad of ['javascript:alert(1)', 'http://cdn.example.com/a.jpg', 'https://sans-point']) {
-      await expect(db.insert(profile).values({ id: 1, avatarUrl: bad }).onConflictDoUpdate({ target: profile.id, set: { avatarUrl: bad } })).rejects.toThrow();
+      for (const set of [{ avatarUrl: bad }, { logoUrl: bad }, { logoDarkUrl: bad }]) {
+        await expect(db.insert(profile).values({ id: 1, ...set }).onConflictDoUpdate({ target: profile.id, set })).rejects.toThrow();
+      }
     }
   });
 });

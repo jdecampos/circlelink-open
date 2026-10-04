@@ -72,5 +72,9 @@ export function profileFrom(input: Record<string, unknown>): Profile | string {
   if (typeof socials === 'string') return socials;
   const avatar_url = normalizeUrl(str(input.avatar_url, 2048));
   if (avatar_url && !isSafeImageUrl(avatar_url)) return 'Photo : adresse https:// d’une image. Exemple : https://monsite.fr/photo.jpg';
-  return { name, handle, bio: str(input.bio, 160), location: str(input.location, 40), socials, theme: input.theme, link_shape: input.link_shape, avatar_url };
+  const logo_url = normalizeUrl(str(input.logo_url, 2048));
+  if (logo_url && !isSafeImageUrl(logo_url)) return 'Logo (thème clair) : adresse https:// d’une image. Exemple : https://monsite.fr/logo.svg';
+  const logo_dark_url = normalizeUrl(str(input.logo_dark_url, 2048));
+  if (logo_dark_url && !isSafeImageUrl(logo_dark_url)) return 'Logo (thème sombre) : adresse https:// d’une image. Exemple : https://monsite.fr/logo-blanc.svg';
+  return { name, handle, bio: str(input.bio, 160), location: str(input.location, 40), socials, theme: input.theme, link_shape: input.link_shape, avatar_url, logo_url, logo_dark_url };
 }

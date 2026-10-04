@@ -37,7 +37,7 @@ describe('lecture de la page', () => {
 
   it('renvoie le format attendu par l’interface (snake_case)', async () => {
     const p = await readPublicPage();
-    expect(p.profile).toEqual({ name: 'Alex', handle: 'alex', bio: '', location: '', socials: { tiktok: 'https://tiktok.com/@j' }, theme: 'clair', link_shape: 'arrondi', avatar_url: '' });
+    expect(p.profile).toEqual({ name: 'Alex', handle: 'alex', bio: '', location: '', socials: { tiktok: 'https://tiktok.com/@j' }, theme: 'clair', link_shape: 'arrondi', avatar_url: '', logo_url: '', logo_dark_url: '' });
     expect(p.categories.map((c) => c.name)).toEqual(['Formations', 'Contenus']);
     expect(p.links[0]).toMatchObject({ category_id: B, type: 'product', price: '49 €', visible: true, description: '' });
   });

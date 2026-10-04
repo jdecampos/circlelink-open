@@ -32,6 +32,8 @@ export const schemas = {
       theme: { type: 'string', enum: ['clair', 'sombre'] },
       link_shape: { type: 'string', enum: ['pilule', 'arrondi', 'carre'] },
       avatar_url: { type: 'string', maxLength: 2048, description: 'Photo : URL `https:` d’une image ; vide pour afficher l’initiale du nom.', example: 'https://example.com/photo.jpg' },
+      logo_url: { type: 'string', maxLength: 2048, description: 'Logo en haut à gauche, thème clair : URL `https:` d’une image ; vide pour le logo de CircleLink.', example: 'https://example.com/logo.svg' },
+      logo_dark_url: { type: 'string', maxLength: 2048, description: 'Logo pour le thème sombre ; vide : celui du thème clair, sinon le logo de CircleLink.', example: 'https://example.com/logo-blanc.svg' },
     },
   },
   Category: {

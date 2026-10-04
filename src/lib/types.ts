@@ -14,6 +14,9 @@ export type Profile = {
   link_shape: LinkShape;
   /** Photo par URL `https:` ; vide : l'initiale du nom. */
   avatar_url: string;
+  /** Logo en haut à gauche, pour le thème clair et le thème sombre (URL `https:`) ; vide : logo de CircleLink. */
+  logo_url: string;
+  logo_dark_url: string;
 };
 
 export type Category = {
