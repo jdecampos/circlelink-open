@@ -76,25 +76,28 @@ export default function ConnectForm({ current, onDone, onCancel }: { current: Ne
         <label className="label" htmlFor="nlKey">
           Clé API {info.label}
         </label>
-        <div className="od-row">
-          <input
-            className="input od-fill"
-            id="nlKey"
-            type="password"
-            autoComplete="off"
-            spellCheck={false}
-            placeholder={canReuseKey ? 'Clé enregistrée · …' + current?.keyHint : 'Colle ta clé ici'}
-            aria-describedby="nlKeyHint nlKeyErr"
-            value={key}
-            onChange={(e) => {
-              setKey(e.target.value);
-              setAudiences(null);
-            }}
-          />
-          <button className="btn btn-secondary" type="button" onClick={check} disabled={!!busy || (!key && !canReuseKey)}>
-            {busy === 'check' ? <span className="spinner" aria-hidden="true" /> : <Icon name="check" sm />}
-            Vérifier
-          </button>
+        {/* .field > * passe ses enfants en bloc : la rangée champ + bouton vit dans un conteneur */}
+        <div>
+          <div className="od-row">
+            <input
+              className="input od-fill"
+              id="nlKey"
+              type="password"
+              autoComplete="off"
+              spellCheck={false}
+              placeholder={canReuseKey ? 'Clé enregistrée · …' + current?.keyHint : 'Colle ta clé ici'}
+              aria-describedby="nlKeyHint nlKeyErr"
+              value={key}
+              onChange={(e) => {
+                setKey(e.target.value);
+                setAudiences(null);
+              }}
+            />
+            <button className="btn btn-secondary" type="button" onClick={check} disabled={!!busy || (!key && !canReuseKey)}>
+              {busy === 'check' ? <span className="spinner" aria-hidden="true" /> : <Icon name="check" sm />}
+              Vérifier
+            </button>
+          </div>
         </div>
         <p className="hint" id="nlKeyHint">
           {info.keyHelp.text}{' '}
