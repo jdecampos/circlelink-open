@@ -64,10 +64,10 @@
       Fichiers : README.md, LICENSE, CONTRIBUTING.md, SECURITY.md, CHANGELOG.md
       Fait quand : le README couvre Coolify, Docker, mise à jour, sauvegarde/restauration, SMTP, Mautic, API ; toutes les commandes sont en pnpm.
 
-- [~] T-013 — CI GitHub Actions  (US-007, US-008)
+- [x] T-013 — CI GitHub Actions  (US-007, US-008)
       Fichiers : .github/workflows/ci.yml, pnpm-workspace.yaml
       Fait quand : sur une PR, lint, typecheck, test, test:pg, docker build et gitleaks passent ; `minimumReleaseAge: 1440` est écrit en clair.
-      État (2026-10-04) : `.github/workflows/ci.yml` écrit, validé par actionlint ; chaque étape passe en local (pnpm 11, gitleaks 8.30.1 : 0 fuite sur 13 commits). Reste à la voir passer sur GitHub (T-016).
+      État (2026-10-04) : `.github/workflows/ci.yml` écrit, validé par actionlint ; chaque étape passe en local (pnpm 11, gitleaks 8.30.1 : 0 fuite sur 13 commits). Passée sur GitHub : run 37194053652, six jobs verts (lint/types/tests, PostgreSQL 18, image Docker, gitleaks, mise à jour N → N+1).
 
 - [x] T-014 — Test de mise à jour N → N+1  (US-009 ; dépend de T-004)
       Fait quand : un script de CI démarre l’image de `main`, écrit du contenu, démarre l’image de la PR sur le même volume et relit le contenu.
@@ -78,5 +78,6 @@
 - [ ] T-015 — 🔑 Déploiement réel sur Coolify depuis le dépôt  (US-001)
       Fait quand : sur un Coolify de test, « Public Repository » → Docker Compose → Déployer → `/installation` → premier lien visible sur `/`, en moins de 10 minutes, sans autre saisie que le domaine.
 
-- [ ] T-016 — 🔑 Publication du dépôt et `v1.0.0`  (US-007, US-008)
+- [x] T-016 — 🔑 Publication du dépôt et `v1.0.0`  (US-007, US-008)
       Fait quand : `gitleaks detect` local ne remonte rien ; le dépôt GitHub public est créé vide puis poussé ; la CI passe sur `main` ; l’étiquette `v1.0.0` existe.
+      Preuve (2026-10-04) : github.com/jdecampos/circlelink-open, historique neuf (commit orphelin, gitleaks : 0 fuite), CI verte sur `main`, étiquette et release `v1.0.0` sur ed15a0d.
