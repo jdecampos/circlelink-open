@@ -4,6 +4,8 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Versions : [S
 
 ## [Non publié]
 
+## [1.1.0]
+
 ### Ajouté
 
 - Newsletter par connecteurs : **Brevo, Mailchimp, MailerLite, Kit**, branchés depuis l’espace (Espace → Newsletter), clé API vérifiée auprès du service puis chiffrée en base.
@@ -14,6 +16,7 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Versions : [S
 
 - La mention « Propulsé par CircleLink » est toujours affichée en bas de la page : l’interrupteur de l’espace disparaît (et le champ `show_credit` de l’API).
 - Formulaires : l’erreur d’un champ s’affiche à côté de son libellé, sans décaler la page ; l’aide de l’identifiant devient une icône.
+- Page publique : « Modifier ma page » et « Partager » deviennent des boutons ronds, icône seule, pour laisser la place au logo.
 
 ### Retiré
 

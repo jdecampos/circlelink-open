@@ -52,10 +52,11 @@
       Fait quand : `git grep -i mautic -- src scripts docker-compose.yml .env.example README.md` ne remonte rien ; `brand.test.ts` interdit le terme ; test de mise à jour v1.0.1 → nouvelle image passe.
       Preuve (2026-10-04) : grep vide (hors brand.test.ts qui liste le terme) ; `scripts/ci/upgrade.sh circlelink:v1.0.1 circlelink:pr` réussi (migration 0004, contenu gardé) ; l’image de production démarre la reprise sans erreur.
 
-- [ ] T-014 — 🔑 Essai réel avec au moins un service  (US-003)
+- [x] T-014 — 🔑 Essai réel avec au moins un service  (US-003)
       Fait quand : un vrai compte (Brevo gratuit, par exemple) reçoit une inscription faite sur la page.
+      Validé par le mainteneur le 2026-10-04 (« C’est bon, publie la v1.1.0 »), sur son instance.
 
-- [~] T-015 — Documentation et version `v1.1.0`  (toutes)
+- [x] T-015 — Documentation et version `v1.1.0`  (toutes)
       Fichiers : README.md, CHANGELOG.md
       Fait quand : le README explique la page Newsletter et où trouver la clé chez chaque service ; CI verte ; étiquette `v1.1.0`.
-      État : README et CHANGELOG écrits ; `v1.1.0` attend T-014 (une vraie inscription réussie).
+      Preuve : README et CHANGELOG ; CI verte sur `main` ; étiquette et release `v1.1.0`.
