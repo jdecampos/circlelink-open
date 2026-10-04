@@ -4,6 +4,10 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Versions : [S
 
 ## [Non publié]
 
+### Modifié
+
+- Écran d’installation et message de variable manquante : plus de référence à un hébergeur en particulier.
+
 ## [1.0.0] — première version publique
 
 ### Ajouté

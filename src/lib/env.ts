@@ -5,7 +5,7 @@ type Env = Record<string, string | undefined>;
 /** Variables sans lesquelles l'instance ne peut pas démarrer. SMTP_* et MAUTIC_* sont facultatives. */
 export const REQUIRED_ENV = ['SITE_URL', 'DATABASE_URL', 'DATABASE_MIGRATION_URL', 'BETTER_AUTH_SECRET'] as const;
 
-const HINT = 'Sur Coolify, elle est générée par le docker-compose.yml ; ailleurs, lance ./scripts/init-env.sh <url>.';
+const HINT = 'Renseigne-la dans les variables d’environnement de l’application, ou lance ./scripts/init-env.sh <url> pour générer un fichier .env.';
 
 /** Une erreur par variable absente ou invalide, chacune nommant la variable (constitution V). */
 export function envProblems(env: Env = process.env): string[] {

@@ -1,7 +1,7 @@
 import { sql } from 'drizzle-orm';
 import { getDb } from '@/lib/db/client';
 
-// Healthcheck de Coolify : l'app répond ET joint sa base.
+// Healthcheck (docker-compose.yml, hébergeur) : l'app répond ET joint sa base.
 export const dynamic = 'force-dynamic';
 
 export async function GET() {

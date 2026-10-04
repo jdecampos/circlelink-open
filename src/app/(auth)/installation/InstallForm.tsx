@@ -8,7 +8,7 @@ import { install } from './actions';
 type Field = { id: 'code' | 'name' | 'email' | 'password'; label: string; type: string; autoComplete: string; hint?: string; placeholder?: string };
 
 const FIELDS: Field[] = [
-  { id: 'code', label: 'Code d’installation', type: 'text', autoComplete: 'off', placeholder: 'XXXX-XXXX-…', hint: 'Affiché dans les journaux du conteneur au démarrage (Coolify : onglet « Logs » ; Docker : docker compose logs app).' },
+  { id: 'code', label: 'Code d’installation', type: 'text', autoComplete: 'off', placeholder: 'XXXX-XXXX-…', hint: 'Affiché dans les journaux (logs) de l’application, à son démarrage.' },
   { id: 'name', label: 'Ton nom', type: 'text', autoComplete: 'name', hint: 'Affiché en haut de ta page. Modifiable ensuite.' },
   { id: 'email', label: 'Adresse email', type: 'email', autoComplete: 'email', placeholder: 'toi@example.com' },
   { id: 'password', label: 'Mot de passe', type: 'password', autoComplete: 'new-password', hint: '8 caractères minimum.' },

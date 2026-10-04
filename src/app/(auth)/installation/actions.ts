@@ -9,7 +9,7 @@ import { SetupError, installOwner, type InstallInput } from '@/lib/setup/install
 import { SETUP_TAG } from '@/lib/setup/owner';
 import type { ActionResult } from '@/lib/types';
 
-/** Adresse du visiteur : dernier saut ajouté par le proxy (Coolify), pour la limite d'essais. */
+/** Adresse du visiteur : dernier saut ajouté par le proxy HTTPS, pour la limite d'essais. */
 function clientIp(h: Headers): string {
   const hops = (h.get('x-forwarded-for') ?? '').split(',').map((s) => s.trim()).filter(Boolean);
   return hops.at(-1) || h.get('x-real-ip') || 'inconnue';
