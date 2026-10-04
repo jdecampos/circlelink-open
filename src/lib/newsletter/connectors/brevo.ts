@@ -1,19 +1,17 @@
 import 'server-only';
+import { PROVIDERS } from '../providers';
 import { classify, num, readOrThrow, request } from './http';
 import { ConnectorError, type Connector } from './types';
 
 // API v3 de Brevo : https://developers.brevo.com/reference
 const BASE = 'https://api.brevo.com/v3';
-const LABEL = 'Brevo';
+const LABEL = PROVIDERS.brevo.label;
 const headers = (key: string) => ({ 'api-key': key });
 
 type List = { id?: unknown; name?: unknown; uniqueSubscribers?: unknown; totalSubscribers?: unknown };
 
 export const brevo: Connector = {
-  id: 'brevo',
-  label: LABEL,
-  audienceLabel: 'liste',
-  keyHelp: { url: 'https://app.brevo.com/settings/keys/api', text: 'Brevo → Paramètres → SMTP & API → Clés API → « Générer une nouvelle clé API » (elle commence par xkeysib-).' },
+  ...PROVIDERS.brevo,
 
   checkKey(key) {
     if (key.startsWith('xsmtpsib-')) return 'C’est une clé SMTP : crée plutôt une clé API Brevo (elle commence par xkeysib-).';

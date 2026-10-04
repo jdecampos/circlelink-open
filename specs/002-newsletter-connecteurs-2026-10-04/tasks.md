@@ -37,9 +37,10 @@
       Fichiers : deliver.ts, subscription.ts, retry.ts, start.ts, instrumentation.ts (+ tests)
       Fait quand : désactivé → refus sans appel ; service lent → file ; 401 → file + `key_rejected_at` ; reprise vers le service connecté ; deux conteneurs ne transmettent jamais deux fois (test PostgreSQL existant).
 
-- [ ] T-011 — Page Newsletter de l’espace  (US-001, US-002)
+- [x] T-011 — Page Newsletter de l’espace  (US-001, US-002)
       Fichiers : (admin)/admin/newsletter/*, newsletter-actions.ts, AdminSidebar.tsx, data.ts, types.ts
       Fait quand : chaque action refuse sans propriétaire (actions.test.ts) ; aucune réponse ne contient la clé ; parcours complet en navigateur (vérifier, choisir la liste, activer, voir le bloc sur `/`, désactiver) ; captures 390 et 1440 px.
+      Preuve (2026-10-04) : `newsletter-actions.test.ts` (refus sans propriétaire, clé jamais renvoyée). En navigateur : une fausse clé envoyée aux vraies API des quatre services renvoie « Clé refusée par Brevo / Mailchimp / MailerLite / Kit » ; avec un service simulé, interrupteur → bloc visible sur `/`, inscription → file + alerte « Brevo refuse la clé », stats « service indisponible », désactivation → bloc retiré. Captures 390 et 1440 px. L’inscription réussie chez un vrai service reste à T-014.
 
 - [x] T-012 — Statistiques  (US-004)
       Fichiers : (admin)/admin/stats/*

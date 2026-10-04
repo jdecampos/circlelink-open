@@ -1,40 +1,22 @@
 'use server';
 
-import { revalidatePath, updateTag } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 import { newApiKey } from '@/lib/api/key';
-import { OwnerRequiredError, requireOwner, type OwnerSession } from '@/lib/auth/owner';
+import type { OwnerSession } from '@/lib/auth/owner';
 import { categoryNameFrom, isId, linkFrom, profileFrom } from '@/lib/content/validate';
 import { deleteApiKey, saveApiKey } from '@/lib/db/queries/api-keys';
 import { CategoryNotEmptyError, DuplicateNameError, createCategory as dbCreateCategory, deleteCategory as dbDeleteCategory, renameCategory as dbRenameCategory, swapCategories as dbSwapCategories } from '@/lib/db/queries/categories';
 import { createLink, deleteLink as dbDeleteLink, setLinkVisible as dbSetLinkVisible, swapLinks as dbSwapLinks, updateLink, type LinkRow } from '@/lib/db/queries/links';
 import { updateProfile } from '@/lib/db/queries/profile';
-import { PUBLIC_PAGE_TAG } from '@/lib/cache-tags';
+import { done, fail, owned as ownedBy } from './action-helpers';
 import type { ActionResult, LinkItem, LinkShape, LinkType, Theme } from '@/lib/types';
 
 /* Constitution VII.1 : chaque action commence par requireOwner(), puis revalide ses
    entrées (le client n'est qu'une aide à la saisie) avec les règles partagées de
    src/lib/content/validate.ts. Les contraintes de la base restent le dernier verrou. */
 
-const fail = (error: string): ActionResult => ({ ok: false, error });
-
-/** Session propriétaire, puis l'action ; toute erreur devient un message affichable. */
-async function owned<T extends ActionResult>(run: (owner: OwnerSession) => Promise<T | ActionResult>): Promise<T | ActionResult> {
-  try {
-    return await run(await requireOwner());
-  } catch (e) {
-    if (e instanceof OwnerRequiredError || e instanceof DuplicateNameError || e instanceof CategoryNotEmptyError) return fail(e.message);
-    // le détail technique reste côté serveur
-    console.error('admin.action', e instanceof Error ? e.message : e);
-    return fail('Enregistrement impossible pour le moment. Réessaie dans un instant.');
-  }
-}
-
-function done(): ActionResult {
-  updateTag(PUBLIC_PAGE_TAG);
-  revalidatePath('/');
-  revalidatePath('/admin', 'layout');
-  return { ok: true };
-}
+/** Ces erreurs portent un message destiné à la propriétaire. */
+const owned = <T extends ActionResult>(run: (owner: OwnerSession) => Promise<T | ActionResult>) => ownedBy(run, [DuplicateNameError, CategoryNotEmptyError]);
 
 /* ------------------------------------------------------------------ liens */
 

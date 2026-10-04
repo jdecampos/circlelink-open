@@ -1,10 +1,11 @@
 import 'server-only';
+import { PROVIDERS } from '../providers';
 import { createHash } from 'node:crypto';
 import { classify, num, readOrThrow, request } from './http';
 import type { Connector } from './types';
 
 // API Marketing de Mailchimp : https://mailchimp.com/developer/marketing/api/
-const LABEL = 'Mailchimp';
+const LABEL = PROVIDERS.mailchimp.label;
 // La clé se termine par le centre de données du compte (-us21…) : il donne l'hôte de l'API.
 const KEY_RE = /^[0-9a-f]{32}-([a-z]{2,4}[0-9]{1,3})$/;
 
@@ -19,10 +20,7 @@ const memberHash = (email: string) => createHash('md5').update(email.toLowerCase
 type List = { id?: unknown; name?: unknown; stats?: { member_count?: unknown } };
 
 export const mailchimp: Connector = {
-  id: 'mailchimp',
-  label: LABEL,
-  audienceLabel: 'audience',
-  keyHelp: { url: 'https://admin.mailchimp.com/account/api/', text: 'Mailchimp → Profil → Extras → Clés API → « Créer une clé » (elle se termine par -us21, par exemple).' },
+  ...PROVIDERS.mailchimp,
 
   checkKey: (key) => (KEY_RE.test(key) ? null : 'Format de clé Mailchimp inattendu : elle se termine par le centre de données, par exemple -us21.'),
 

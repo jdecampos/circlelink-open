@@ -1,10 +1,11 @@
 import 'server-only';
+import { PROVIDERS } from '../providers';
 import { classify, num, readOrThrow, request } from './http';
 import { ConnectorError, type Connector } from './types';
 
 // Nouvelle API de MailerLite : https://developers.mailerlite.com/docs/
 const BASE = 'https://connect.mailerlite.com/api';
-const LABEL = 'MailerLite';
+const LABEL = PROVIDERS.mailerlite.label;
 const headers = (key: string) => ({ Authorization: 'Bearer ' + key });
 
 type Group = { id?: unknown; name?: unknown; active_count?: unknown };
@@ -16,10 +17,7 @@ async function groups(key: string, timeoutMs: number): Promise<Group[]> {
 }
 
 export const mailerlite: Connector = {
-  id: 'mailerlite',
-  label: LABEL,
-  audienceLabel: 'groupe',
-  keyHelp: { url: 'https://dashboard.mailerlite.com/integrations/api', text: 'MailerLite → Intégrations → API → « Générer un nouveau jeton ».' },
+  ...PROVIDERS.mailerlite,
 
   checkKey: (key) => (key.length >= 40 ? null : 'Jeton MailerLite trop court : copie-le en entier.'),
 

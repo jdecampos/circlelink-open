@@ -7,6 +7,7 @@ export const NAV: { href: string; label: string; icon: IconName; title: string; 
   { href: '/admin', label: 'Mes liens', icon: 'link', title: 'Mes liens', desc: 'Ajoute, classe et réordonne les liens de ta page.' },
   { href: '/admin/categories', label: 'Catégories', icon: 'folder', title: 'Catégories', desc: 'Les onglets que tes visiteurs utilisent pour filtrer tes liens.' },
   { href: '/admin/apparence', label: 'Profil & apparence', icon: 'palette', title: 'Profil & apparence', desc: 'Ce que les visiteurs voient en haut de ta page, et son style.' },
+  { href: '/admin/newsletter', label: 'Newsletter', icon: 'mail', title: 'Newsletter', desc: 'L’inscription à ta newsletter, branchée sur ton service d’emailing.' },
   { href: '/admin/stats', label: 'Statistiques', icon: 'chart', title: 'Statistiques', desc: 'Ce qui est cliqué sur ta page.' },
 ];
 

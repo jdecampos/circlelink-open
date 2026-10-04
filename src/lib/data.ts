@@ -7,6 +7,7 @@ import { getAuth } from './auth/server';
 import { apiKeyInfo } from './db/queries/api-keys';
 import { clickCounts, clickSources } from './db/queries/clicks';
 import { queueStats } from './db/queries/newsletter';
+import { getNewsletterView } from './db/queries/newsletter-settings';
 import { readAdminPage, readPublicPage } from './db/queries/page';
 import type { AdminData } from './types';
 
@@ -28,6 +29,13 @@ export async function getAdminData(): Promise<AdminData | 'anon' | 'forbidden'> 
   const owner = await ownerFrom(session);
   if (!owner) return 'forbidden';
 
-  const [page, clicks, sources, queue, apiKey] = await Promise.all([readAdminPage(), clickCounts(), clickSources(), queueStats(), apiKeyInfo(owner.userId)]);
-  return { ...page, email: owner.email, clicks, sources, queue, apiKey };
+  const [page, clicks, sources, queue, apiKey, newsletterSettings] = await Promise.all([
+    readAdminPage(),
+    clickCounts(),
+    clickSources(),
+    queueStats(),
+    apiKeyInfo(owner.userId),
+    getNewsletterView(),
+  ]);
+  return { ...page, email: owner.email, clicks, sources, queue, apiKey, newsletterSettings };
 }

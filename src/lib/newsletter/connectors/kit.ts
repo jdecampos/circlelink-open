@@ -1,19 +1,17 @@
 import 'server-only';
+import { PROVIDERS } from '../providers';
 import { classify, num, readOrThrow, request } from './http';
 import type { Connector } from './types';
 
 // API v4 de Kit (ex-ConvertKit) : https://developers.kit.com/
 const BASE = 'https://api.kit.com/v4';
-const LABEL = 'Kit';
+const LABEL = PROVIDERS.kit.label;
 const headers = (key: string) => ({ 'X-Kit-Api-Key': key });
 
 type Tag = { id?: unknown; name?: unknown };
 
 export const kit: Connector = {
-  id: 'kit',
-  label: LABEL,
-  audienceLabel: 'tag',
-  keyHelp: { url: 'https://app.kit.com/account_settings/developer_settings', text: 'Kit → Paramètres → Développeur → « Ajouter une clé API v4 ». Les inscrits reçoivent le tag choisi.' },
+  ...PROVIDERS.kit,
 
   checkKey: (key) => (key.length >= 20 ? null : 'Clé Kit trop courte : copie la clé API v4 en entier.'),
 

@@ -1,3 +1,5 @@
+import type { NewsletterSettingsView } from '@/lib/db/queries/newsletter-settings';
+
 export type LinkType = 'link' | 'featured' | 'product';
 export type Theme = 'clair' | 'sombre';
 export type LinkShape = 'pilule' | 'arrondi' | 'carre';
@@ -49,9 +51,11 @@ export type AdminData = PageData & {
   email: string;
   clicks: Record<string, number>;
   sources: { source: string; clicks: number }[];
-  /** File d'attente newsletter : inscriptions pas encore transmises à Mautic, et perdues. */
+  /** File d'attente newsletter : inscriptions pas encore transmises au service, et perdues. */
   queue: { pending: number; lost: number };
   apiKey: ApiKeyInfo | null;
+  /** Connecteur newsletter, sans la clé (constitution VII.3). */
+  newsletterSettings: NewsletterSettingsView;
 };
 
 export type ActionResult = { ok: true } | { ok: false; error: string };

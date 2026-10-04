@@ -1,4 +1,5 @@
 import type { ProviderId } from '@/lib/db/queries/newsletter-settings';
+import type { ProviderInfo } from '../providers';
 import type { DeliveryOutcome, Source } from '../types';
 
 export type { ProviderId };
@@ -19,13 +20,8 @@ export class ConnectorError extends Error {
   }
 }
 
-export type Connector = {
-  id: ProviderId;
-  label: string;
-  /** Nom de la liste chez ce service, au singulier : « liste », « audience »… */
-  audienceLabel: string;
-  /** Où créer la clé, et ce qu'elle doit pouvoir faire. */
-  keyHelp: { url: string; text: string };
+/** Un service d'emailing : son affichage (ProviderInfo) et ses appels. */
+export type Connector = ProviderInfo & {
   /** Message si la clé n'a pas le format attendu, avant tout appel réseau. */
   checkKey(key: string): string | null;
   listAudiences(key: string, opts: Call): Promise<Audience[]>;
