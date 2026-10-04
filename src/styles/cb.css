@@ -238,8 +238,16 @@ button { cursor: pointer; }
 /* ============================================================
    Formulaires
    ============================================================ */
-.field { display: grid; gap: 6px; }
+.field { display: grid; gap: 6px; align-content: start; }
 .field > * { display: block; min-width: 0; }
+/* L'erreur s'affiche sur la ligne du libellé, à droite, sur une seule ligne : rien ne se décale
+   sous le champ ni dans la colonne voisine. Le résumé d'erreurs, à l'envoi, donne le texte entier.
+   Seulement quand le libellé est un enfant direct du champ (pas pour .field-head et son compteur). */
+.field:has(> .label) { grid-template-columns: auto minmax(0, 1fr); column-gap: var(--s3); }
+.field:has(> .label) > * { grid-column: 1 / -1; }
+.field:has(> .label) > .label { grid-column: 1; grid-row: 1; }
+.field:has(> .label) > .error { grid-column: 2; grid-row: 1; justify-self: end; align-self: center; max-width: 100%; }
+.field:has(> .label) > .error span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .label { font-weight: 700; font-size: var(--fs-sm); color: var(--fg); }
 .label .req { color: var(--accent-ink); margin-left: 2px; }
 .hint { font-size: var(--fs-sm); color: var(--muted); }
@@ -258,6 +266,13 @@ button { cursor: pointer; }
 .field.has-error .input, .field.has-error .select, .field.has-error .textarea { border-color: var(--danger); }
 .error { display: none; align-items: flex-start; gap: 6px; font-size: var(--fs-sm); color: var(--danger); font-weight: 600; }
 .field.has-error .error { display: flex; }
+/* Aide d'un champ : icône à côté du libellé, texte au survol et au focus (au lieu d'une ligne sous le champ) */
+.tip { position: relative; display: inline-flex; vertical-align: middle; margin-left: 4px; }
+.tip-btn { display: inline-grid; place-items: center; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--muted); cursor: help; }
+.tip-btn:hover, .tip-btn:focus-visible { color: var(--fg); }
+.tip-btn:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 1px; }
+.tip-text { position: absolute; left: 50%; bottom: calc(100% + 6px); transform: translateX(-50%); z-index: 20; width: max-content; max-width: 240px; padding: 8px 10px; border-radius: var(--r-sm); background: var(--ink); color: var(--on-ink); font-size: var(--fs-xs); font-weight: 600; line-height: 1.4; box-shadow: var(--sh-2); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--dur-fast) var(--ease-out); }
+.tip:hover .tip-text, .tip-btn:focus + .tip-text { opacity: 1; visibility: visible; }
 .counter { font-size: var(--fs-xs); color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
 
 .error-summary {

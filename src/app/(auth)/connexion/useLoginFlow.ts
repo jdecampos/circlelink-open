@@ -14,12 +14,12 @@ type AuthError = { status?: number; message?: string } | null;
 export function checkEmail(v: string) {
   const t = v.trim();
   if (!t) return 'Indique ton adresse email.';
-  if (!EMAIL_RE.test(t)) return 'Adresse incomplète : vérifie le @ et le domaine (ex. prenom@example.com).';
+  if (!EMAIL_RE.test(t)) return 'Adresse incomplète (vérifie le @).';
   return '';
 }
 export function checkPw(v: string) {
   if (!v) return 'Indique ton mot de passe.';
-  if (v.length < 8) return 'Le mot de passe fait au moins 8 caractères (' + v.length + ' saisis).';
+  if (v.length < 8) return 'Trop court : ' + v.length + ' sur 8.';
   return '';
 }
 

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { NETWORKS } from '@/lib/links';
 import type { Profile } from '@/lib/types';
-import { ErrorSummary, FieldError, type FieldErr } from '@/components/forms';
+import { ErrorSummary, FieldError, InfoTip, type FieldErr } from '@/components/forms';
 import { saveProfile } from '../actions';
 import { useAdmin } from '../AdminShell';
 import ApiKeyCard from './ApiKeyCard';
@@ -53,7 +53,7 @@ function AppearanceForm({ profile }: { profile: Profile }) {
   const vName = (v = f.name) => setErr('name', v.trim() ? '' : 'Indique le nom à afficher sur ta page.');
   const vHandle = (v = f.handle) => {
     const t = v.trim();
-    return setErr('handle', !t ? 'Choisis un identifiant.' : /^[a-z0-9._-]{2,30}$/.test(t) ? '' : 'Utilise 2 à 30 caractères : minuscules, chiffres, point ou tiret, sans espace.');
+    return setErr('handle', !t ? 'Choisis un identifiant.' : /^[a-z0-9._-]{2,30}$/.test(t) ? '' : 'Format non valide (voir l’aide).');
   };
 
   async function onSubmit(e: React.FormEvent) {
@@ -105,6 +105,7 @@ function AppearanceForm({ profile }: { profile: Profile }) {
           <div className={cls('handle')}>
             <label className="label" htmlFor="apHandle">
               Identifiant<span className="req" aria-hidden="true">*</span>
+              <InfoTip id="apHandleHint" text="Lettres minuscules, chiffres, point, tiret." />
             </label>
             <div className="prefix">
               <span aria-hidden="true">@</span>
@@ -128,9 +129,6 @@ function AppearanceForm({ profile }: { profile: Profile }) {
                 }}
               />
             </div>
-            <p className="hint" id="apHandleHint">
-              Lettres minuscules, chiffres, point, tiret.
-            </p>
             <FieldError id="apHandleErr" msg={errs.handle} />
           </div>
           <div className="field span-2">

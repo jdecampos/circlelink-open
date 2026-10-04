@@ -26,7 +26,7 @@ export default function NewPasswordPage() {
   }, [EXPIRED]);
 
   const check = (v: string) =>
-    !v ? 'Choisis un mot de passe.' : v.length < 8 ? 'Le mot de passe fait au moins 8 caractères (' + v.length + ' saisis).' : '';
+    !v ? 'Choisis un mot de passe.' : v.length < 8 ? 'Trop court : ' + v.length + ' sur 8.' : '';
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();

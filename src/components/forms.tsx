@@ -5,14 +5,31 @@ import { Icon } from '@/lib/icons';
 
 export type FieldErr = { id: string; msg: string };
 
-/** Message d'erreur sous un champ (affiché par .field.has-error). */
+/**
+ * Aide d'un champ, en icône à côté du libellé : le texte s'affiche au survol et au focus clavier,
+ * sans occuper de ligne sous le champ. Lu par les lecteurs d'écran via `id` (aria-describedby du champ).
+ */
+export function InfoTip({ id, text }: { id: string; text: string }) {
+  return (
+    <span className="tip">
+      <button className="tip-btn" type="button" aria-label="Aide" aria-describedby={id}>
+        <Icon name="info" sm />
+      </button>
+      <span className="tip-text" role="tooltip" id={id}>
+        {text}
+      </span>
+    </span>
+  );
+}
+
+/** Message d'erreur d'un champ, sur la ligne du libellé (affiché par .field.has-error). */
 export function FieldError({ id, msg, style }: { id: string; msg?: string; style?: React.CSSProperties }) {
   return (
     <p className="error" id={id} style={style}>
       {msg && (
         <>
           <Icon name="alert" sm />
-          <span>{msg}</span>
+          <span title={msg}>{msg}</span>
         </>
       )}
     </p>
