@@ -1,11 +1,11 @@
-# Contrôles de chaque PR et de chaque push sur main et develop (constitution : chaque CONTRÔLE
+# Contrôles de chaque PR et de chaque push sur main (constitution : chaque CONTRÔLE
 # exécutable passe ici). Actions épinglées par empreinte de commit, jamais par étiquette mobile.
 name: CI
 
 on:
   pull_request:
   push:
-    branches: [main, develop]
+    branches: [main]
   workflow_dispatch: # relance à la main (onglet Actions)
 
 permissions:

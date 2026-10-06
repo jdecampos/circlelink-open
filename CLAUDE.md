@@ -88,4 +88,4 @@ Trois surfaces, chacune avec **son propre root layout** et sa propre feuille de 
 
 ## Branches
 
-`develop` (intégration) → `main` (stable, étiquetée `vX.Y.Z`). La CI GitHub Actions tourne sur chaque PR.
+Une seule branche : `main`, étiquetée `vX.Y.Z` à chaque version. Les modifications passent par une branche de travail et une PR vers `main` ; la CI GitHub Actions tourne sur chaque PR.

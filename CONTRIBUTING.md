@@ -35,13 +35,13 @@ L’interface est en français, au tutoiement, avec les apostrophes et espaces t
 
 ## Proposer une modification
 
-1. Pars de `develop` : `git switch -c ma-correction develop`.
+1. Pars de `main` : `git switch -c ma-correction main`.
 2. Vérifie avant de pousser :
    ```bash
    pnpm lint && pnpm typecheck && pnpm test && pnpm test:pg
    ```
 3. Si tu modifies le schéma (`src/lib/db/schema/`) : `pnpm db:generate`, et commite la migration créée dans `drizzle/`. Ne modifie jamais une migration déjà publiée.
 4. Ajoute une ligne à la section « Non publié » de [CHANGELOG.md](CHANGELOG.md).
-5. Ouvre la PR vers `develop`. La CI relance tout, construit l’image Docker et cherche des secrets (gitleaks).
+5. Ouvre la PR vers `main`. La CI relance tout, construit l’image Docker et cherche des secrets (gitleaks).
 
 En contribuant, tu acceptes que ton code soit publié sous [licence MIT](LICENSE).
